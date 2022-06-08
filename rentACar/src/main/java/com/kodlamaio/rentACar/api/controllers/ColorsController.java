@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kodlamaio.rentACar.business.abstracts.ColorService;
 import com.kodlamaio.rentACar.business.request.colors.CreateColorRequest;
+import com.kodlamaio.rentACar.business.request.colors.UpdateColorRequest;
+import com.kodlamaio.rentACar.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/colors")
@@ -19,6 +21,11 @@ public class ColorsController {
 	@PostMapping("/add")
 	public void add(@RequestBody CreateColorRequest createColorRequest) {
 		this.colorService.add(createColorRequest);
+	}
+	
+	@PostMapping("/update")
+	public Result update(@RequestBody UpdateColorRequest updateColorRequest) {
+		return this.colorService.update(updateColorRequest);
 	}
 
 }

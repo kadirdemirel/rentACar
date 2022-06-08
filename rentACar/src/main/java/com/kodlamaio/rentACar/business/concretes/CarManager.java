@@ -9,6 +9,7 @@ import com.kodlamaio.rentACar.business.abstracts.CarService;
 import com.kodlamaio.rentACar.business.request.cars.CreateCarRequest;
 import com.kodlamaio.rentACar.business.request.cars.DeleteCarRequest;
 import com.kodlamaio.rentACar.business.request.cars.UpdateCarRequest;
+import com.kodlamaio.rentACar.business.response.cars.ReadCarResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.ErrorResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -95,6 +96,12 @@ public class CarManager implements CarService {
 	public DataResult<List<Car>> getAll() {
 		
 		return new SuccessDataResult<List<Car>>(this.carRepository.findAll());
+	}
+
+	@Override
+	public DataResult<Car> getById(ReadCarResponse readCarResponse) {
+		
+		return new SuccessDataResult<Car>(this.carRepository.getById(readCarResponse.getId()));
 	}
 
 }

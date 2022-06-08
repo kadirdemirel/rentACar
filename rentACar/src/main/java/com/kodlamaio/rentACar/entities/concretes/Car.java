@@ -40,11 +40,11 @@ public class Car {
 	@ManyToOne
 	@JoinColumn(name = "color_id")
 	private Color color;
-	
-	@Column(name = "plate")
-	private String plate;
-	
-	@Column(name = "kilometer")
-	private int kilometer;
+//	
+//	@Column(name = "plate")
+//	private String plate;
+//	
+//	@Column(name = "kilometer")
+//	private int kilometer;
 
 }
