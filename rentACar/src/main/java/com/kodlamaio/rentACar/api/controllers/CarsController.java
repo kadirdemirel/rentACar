@@ -14,7 +14,6 @@ import com.kodlamaio.rentACar.business.request.cars.DeleteCarRequest;
 import com.kodlamaio.rentACar.business.request.cars.UpdateCarRequest;
 import com.kodlamaio.rentACar.business.response.cars.ReadCarResponse;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
-import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 
 @RestController
 @RequestMapping("/api/cars")

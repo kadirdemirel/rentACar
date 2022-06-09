@@ -22,18 +22,24 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "maintenances")
-public class Maintenance {
+@Table(name = "rentals")
+public class Rental {
 	@Id()
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "date_sent")
-	private LocalDate dateSent;
+	@Column(name = "pickup_date")
+	private LocalDate pickupDate;
 
-	@Column(name = "date_returned")
-	private LocalDate dateReturned;
+	@Column(name = "returned_date")
+	private LocalDate returnedDate;
+
+	@Column(name = "total_days")
+	private int totalDays;
+
+	@Column(name = "total_price")
+	private double totalPrice;
 
 	@ManyToOne
 	@JoinColumn(name = "car_id")

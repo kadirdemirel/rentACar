@@ -38,7 +38,7 @@ public class CarManager implements CarService {
 		car.setDescription(createCarRequest.getDescription());
 		car.setDailyPrice(createCarRequest.getDailyPrice());
 		brand.setId(createCarRequest.getBrandId());
-		color.setId(createCarRequest.getBrandId());
+		color.setId(createCarRequest.getColorId());
 		car.setBrand(brand);
 		car.setColor(color);
 //		if (carRepository.getByBrandId(createCarRequest.getBrandId()).size() < 5) {
@@ -65,6 +65,7 @@ public class CarManager implements CarService {
 
 		car.setDescription(updateCarRequest.getDescription());
 		car.setDailyPrice(updateCarRequest.getDailyPrice());
+		car.setState(1);
 		brand.setId(updateCarRequest.getBrandId());
 		color.setId(updateCarRequest.getBrandId());
 		car.setBrand(brand);
