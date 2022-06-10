@@ -1,5 +1,6 @@
 package com.kodlamaio.rentACar.business.concretes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,11 @@ public class RentalManager implements RentalService {
 		Car car = this.carRepository.getById(createRentalRequest.getCarId());
 		car.setState(3);
 		Rental rental = new Rental();
-		rental.setPickupDate(createRentalRequest.getPickupDate());
-		rental.setReturnedDate(createRentalRequest.getReturnedDate());
+		
+		LocalDate date = createRentalRequest.getPickupDate();
+		rental.setPickupDate(date);
+		LocalDate returnvalue= date.plusDays(createRentalRequest.getTotalDays());
+		rental.setReturnedDate(returnvalue);
 		rental.setTotalDays(createRentalRequest.getTotalDays());// hesaplattırılacaklar
 		rental.setTotalPrice(createRentalRequest.getTotalDays() * car.getDailyPrice());// hesaplattırılacak
 		rental.setCar(car);

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kodlamaio.rentACar.business.abstracts.MaintenanceService;
 import com.kodlamaio.rentACar.business.request.maintenance.CreateMaintenanceRequest;
 import com.kodlamaio.rentACar.business.request.maintenance.DeleteMaintenanceRequest;
+import com.kodlamaio.rentACar.business.request.maintenance.UpdateMaintenanceRequest;
 import com.kodlamaio.rentACar.business.response.maintenances.ReadMaintenanceResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -27,6 +28,11 @@ public class MaintenancesController {
 	@PostMapping("/add")
 	public Result add(@RequestBody CreateMaintenanceRequest createMaintenanceRequest) {
 		return this.maintenanceService.add(createMaintenanceRequest);
+
+	}
+	@PostMapping("/update")
+	public Result update(@RequestBody UpdateMaintenanceRequest updateMaintenanceRequest) {
+		return this.maintenanceService.update(updateMaintenanceRequest);
 
 	}
 

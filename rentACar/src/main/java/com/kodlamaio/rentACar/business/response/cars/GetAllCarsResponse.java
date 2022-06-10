@@ -1,18 +1,17 @@
-package com.kodlamaio.rentACar.business.request.cars;
+package com.kodlamaio.rentACar.business.response.cars;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CreateCarRequest {
-
+@AllArgsConstructor
+public class GetAllCarsResponse {
+	private int id;
 	private String description;
 	private double dailyPrice;
-	private int brandId;
-	private int colorId;
+	private int state;
 	private String plate;
 	private int kilometer;
 

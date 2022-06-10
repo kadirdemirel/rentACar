@@ -5,6 +5,7 @@ import java.util.List;
 import com.kodlamaio.rentACar.business.request.cars.CreateCarRequest;
 import com.kodlamaio.rentACar.business.request.cars.DeleteCarRequest;
 import com.kodlamaio.rentACar.business.request.cars.UpdateCarRequest;
+import com.kodlamaio.rentACar.business.response.cars.GetAllCarsResponse;
 import com.kodlamaio.rentACar.business.response.cars.ReadCarResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -18,7 +19,7 @@ public interface CarService {
 
 	Result delete(DeleteCarRequest deleteCarRequest);
 	
-	DataResult<List<Car>> getAll();
+	DataResult<List<GetAllCarsResponse>> getAll();
 	
 	DataResult<Car> getById(ReadCarResponse readCarResponse);
 

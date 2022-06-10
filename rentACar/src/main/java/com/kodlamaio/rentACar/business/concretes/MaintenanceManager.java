@@ -1,5 +1,6 @@
 package com.kodlamaio.rentACar.business.concretes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,13 @@ public class MaintenanceManager implements MaintenanceService {
 		Maintenance maintenance = new Maintenance();
 		Car car = this.carRepository.getById(updateMaintenanceRequest.getCarId());
 		car.setId(updateMaintenanceRequest.getCarId());
-		car.setState(2);
+		//car.setState(2);
+		
+		LocalDate lt = LocalDate.now();
+		
+		if(lt.equals(updateMaintenanceRequest.getDateReturned())) {
+			car.setState(1);
+		}
 		maintenance.setId(updateMaintenanceRequest.getId());
 		maintenance.setDateSent(updateMaintenanceRequest.getDateSent());
 		maintenance.setDateReturned(updateMaintenanceRequest.getDateReturned());

@@ -14,4 +14,6 @@ public class UpdateCarRequest {
 	private double dailyPrice;
 	private int brandId;
 	private int colorId;
+	private String plate;
+	private int kilometer;
 }
