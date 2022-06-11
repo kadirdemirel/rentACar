@@ -8,16 +8,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kodlamaio.rentACar.business.abstracts.MaintenanceService;
 import com.kodlamaio.rentACar.business.request.maintenance.CreateMaintenanceRequest;
 import com.kodlamaio.rentACar.business.request.maintenance.DeleteMaintenanceRequest;
 import com.kodlamaio.rentACar.business.request.maintenance.UpdateMaintenanceRequest;
+import com.kodlamaio.rentACar.business.response.maintenances.GetAllMaintenancesResponse;
 import com.kodlamaio.rentACar.business.response.maintenances.ReadMaintenanceResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
-import com.kodlamaio.rentACar.entities.concretes.Maintenance;
 
 @RestController
 @RequestMapping("/api/maintenances")
@@ -30,6 +31,7 @@ public class MaintenancesController {
 		return this.maintenanceService.add(createMaintenanceRequest);
 
 	}
+
 	@PostMapping("/update")
 	public Result update(@RequestBody UpdateMaintenanceRequest updateMaintenanceRequest) {
 		return this.maintenanceService.update(updateMaintenanceRequest);
@@ -42,13 +44,13 @@ public class MaintenancesController {
 	}
 
 	@GetMapping("/getbyid")
-	public DataResult<Maintenance> getById(@RequestBody ReadMaintenanceResponse readMaintenanceResponse) {
-		return this.maintenanceService.getById(readMaintenanceResponse);
+	public DataResult<ReadMaintenanceResponse> getById(@RequestParam int id) {
+		return this.maintenanceService.getById(id);
 	}
 
 	@GetMapping("/getall")
-	public DataResult<List<Maintenance>> getAll(ReadMaintenanceResponse readMaintenanceResponse) {
-		return this.maintenanceService.getAll(readMaintenanceResponse);
+	public DataResult<List<GetAllMaintenancesResponse>> getAll() {
+		return this.maintenanceService.getAll();
 	}
 
 }

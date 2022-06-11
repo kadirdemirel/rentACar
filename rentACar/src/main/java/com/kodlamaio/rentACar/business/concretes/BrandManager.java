@@ -1,7 +1,6 @@
 package com.kodlamaio.rentACar.business.concretes;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import com.kodlamaio.rentACar.business.request.brands.DeleteBrandRequest;
 import com.kodlamaio.rentACar.business.request.brands.UpdateBrandRequest;
 import com.kodlamaio.rentACar.business.response.brands.GetAllBrandsResponse;
 import com.kodlamaio.rentACar.business.response.brands.ReadBrandResponse;
+import com.kodlamaio.rentACar.core.utilities.exceptions.BusinessException;
 import com.kodlamaio.rentACar.core.utilities.mapping.ModelMapperService;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -25,7 +25,7 @@ import com.kodlamaio.rentACar.entities.concretes.Brand;
 @Service
 public class BrandManager implements BrandService {
 
-	// Git constructor parametresine bak git onu newle bana onu ver.
+	//Git constructor parametresine bak git onu newle bana onu ver.
 	@Autowired
 	private BrandRepository brandRepository;
 	@Autowired
@@ -33,7 +33,8 @@ public class BrandManager implements BrandService {
 
 	@Override
 	public Result add(CreateBrandRequest createBrandRequest) {
-		// mapping
+		//mapping
+		checkIfBrandExitsByName(createBrandRequest.getName());
 		Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
 		this.brandRepository.save(brand);
 		return new SuccessResult("BRAND.ADDED");
@@ -43,9 +44,9 @@ public class BrandManager implements BrandService {
 	@Override
 	public Result update(UpdateBrandRequest updateBrandRequest) {
 		Brand brand = this.modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
-		
+
 		this.brandRepository.save(brand);
-		return new SuccessResult("BRAND.DELETED");
+		return new SuccessResult("BRAND.UPDATED");
 
 	}
 
@@ -53,28 +54,33 @@ public class BrandManager implements BrandService {
 	public Result delete(DeleteBrandRequest deleteBrandRequest) {
 
 		Brand brand = this.modelMapperService.forRequest().map(deleteBrandRequest, Brand.class);
-		
+
 		this.brandRepository.delete(brand);
-		return new SuccessResult("BRAND.UPDATED");
+		return new SuccessResult("BRAND.DELETED");
 
 	}
 
 	@Override
-	public DataResult<Brand> getById(ReadBrandResponse readBrandResponse) {
-		Brand brand = this.modelMapperService.forRequest().map(readBrandResponse, Brand.class);
-
-		return new SuccessDataResult<Brand>(this.brandRepository.getById(readBrandResponse.getId()));
+	public DataResult<ReadBrandResponse> getById(int id) {
+		Brand brand = this.brandRepository.getById(id);
+		ReadBrandResponse readBrandResponse = this.modelMapperService.forResponse().map(brand, ReadBrandResponse.class);
+		return new SuccessDataResult<ReadBrandResponse>(readBrandResponse);
 	}
 
 	@Override
-	public DataResult<List<GetAllBrandsResponse>>getAll() {
-		 List<Brand>brands = this.brandRepository.findAll();
-		    List<GetAllBrandsResponse>response =
-		            brands.stream().map(brand->this.modelMapperService.forResponse()
-		                    .map(brand, GetAllBrandsResponse.class))
-		            		.collect(Collectors.toList());
-		
+	public DataResult<List<GetAllBrandsResponse>> getAll() {
+		List<Brand> brands = this.brandRepository.findAll();
+		List<GetAllBrandsResponse> response = brands.stream()
+				.map(brand -> this.modelMapperService.forResponse().map(brand, GetAllBrandsResponse.class))
+				.collect(Collectors.toList());
 		return new SuccessDataResult<List<GetAllBrandsResponse>>(response);
+	}
+
+	private void checkIfBrandExitsByName(String name) {
+		Brand currentBrand = this.brandRepository.findByName(name);
+		if (currentBrand != null) {
+			throw new BusinessException("BRAND.EXITS");
+		}
 	}
 
 }

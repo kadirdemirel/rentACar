@@ -2,7 +2,6 @@ package com.kodlamaio.rentACar.entities.concretes;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,6 +36,6 @@ public class City {
 
     @OneToMany(mappedBy = "returnCity")
     private List<Rental> returnCities;
-
+    
 
 }

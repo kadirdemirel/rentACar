@@ -5,10 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ReadColorResponse {
+@NoArgsConstructor
+public class GetAllColorsResponse {
 	private int id;
 	private String name;
-
 }

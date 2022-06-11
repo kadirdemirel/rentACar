@@ -1,39 +1,40 @@
 package com.kodlamaio.rentACar.entities.concretes;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "additionals"})
-@Data
+
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "additional_items")
-public class AdditionalItem {
+@Table(name = "users")
+public class User {
 	@Id()
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name="id")
 	private int id;
 	
-	@Column(name = "name")
-	private String name;
+	@Column(name = "first_name")
+	private String firstName;
 	
-	@Column(name = "daily_price")
-	private double dailyPrice;
+	@Column(name = "last_name")
+	private String lastName;
 	
-	@OneToMany(mappedBy = "additionalItem")
-	List<Additional> additionals;
+	@Column(name = "nationality_id")
+	private String nationalityId;
+	
+	@Column(name = "email")
+	private String email;
+	
+	@Column(name = "password")
+	private String password;
 
 }

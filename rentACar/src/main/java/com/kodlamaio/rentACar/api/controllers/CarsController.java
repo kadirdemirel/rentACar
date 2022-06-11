@@ -2,6 +2,8 @@ package com.kodlamaio.rentACar.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +30,7 @@ public class CarsController {
 	private CarService carService;
 
 	@PostMapping("/add")
-	public Result add(@RequestBody CreateCarRequest createCarRequest) {
+	public Result add(@RequestBody @Valid CreateCarRequest createCarRequest) {
 		return this.carService.add(createCarRequest);
 
 	}
@@ -38,20 +40,19 @@ public class CarsController {
 		return this.carService.update(updateCarRequest);
 	}
 
-	@DeleteMapping("/delete")//neden? 
+	@DeleteMapping("/delete") // neden?
 	public Result delete(@RequestBody DeleteCarRequest deleteCarRequest) {
 		return this.carService.delete(deleteCarRequest);
 	}
-	
+
 	@GetMapping("/getbyid")
 	public DataResult<Car> getById(@RequestBody ReadCarResponse readCarResponse) {
 		return this.carService.getById(readCarResponse);
 	}
-	
+
 	@GetMapping("/getall")
-	public DataResult<List<GetAllCarsResponse>> getAll(){
+	public DataResult<List<GetAllCarsResponse>> getAll() {
 		return this.carService.getAll();
 	}
-	
 
 }

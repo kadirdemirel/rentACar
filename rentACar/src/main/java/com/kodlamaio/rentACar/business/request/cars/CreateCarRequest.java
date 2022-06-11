@@ -15,5 +15,6 @@ public class CreateCarRequest {
 	private int colorId;
 	private String plate;
 	private int kilometer;
+	private int cityId;
 
 }

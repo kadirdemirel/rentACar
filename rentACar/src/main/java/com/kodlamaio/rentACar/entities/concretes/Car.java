@@ -10,6 +10,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -30,9 +34,14 @@ public class Car {
 	@Column(name = "id")
 	private int id;
 
+	
 	@Column(name = "description")
+	@NotBlank
+	@NotEmpty
+	@Size(min = 3, max = 50)
 	private String description;
 
+	@Min(50)
 	@Column(name = "dailyPrice")
 	private double dailyPrice;
 
@@ -50,17 +59,14 @@ public class Car {
 	@Column(name = "plate")
 	private String plate;
 
+	@Min(0)
 	@Column(name = "kilometer")
 	private int kilometer;
 
 	@OneToMany(mappedBy = "car")
 	List<Maintenance> maintenances;
-	
+
 	@OneToMany(mappedBy = "car")
 	List<Rental> rentals;
-
-	
-	
-
 
 }

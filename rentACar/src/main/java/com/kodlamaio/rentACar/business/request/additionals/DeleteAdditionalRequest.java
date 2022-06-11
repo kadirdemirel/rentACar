@@ -1,4 +1,4 @@
-package com.kodlamaio.rentACar.business.response.colors;
+package com.kodlamaio.rentACar.business.request.additionals;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadColorResponse {
+public class DeleteAdditionalRequest {
 	private int id;
-	private String name;
-
 }
