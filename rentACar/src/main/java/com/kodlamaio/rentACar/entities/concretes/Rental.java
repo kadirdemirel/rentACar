@@ -1,6 +1,7 @@
 package com.kodlamaio.rentACar.entities.concretes;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -17,7 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "cars" })
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "cars","cities","additionals" })
 @Entity
 @Data
 @NoArgsConstructor
@@ -41,8 +43,19 @@ public class Rental {
 	@Column(name = "total_price")
 	private double totalPrice;
 
-	@ManyToOne
+	@ManyToOne()	
 	@JoinColumn(name = "car_id")
 	private Car car;
+	
+	@ManyToOne
+    @JoinColumn(name = "pick_up_city_id", referencedColumnName = "id")
+    private City pickUpCity;
+
+    @ManyToOne
+    @JoinColumn(name = "return_city_id", referencedColumnName = "id")
+    private City returnCity;
+    
+    @OneToMany(mappedBy = "rental")
+	List<Additional> additionals;
 
 }

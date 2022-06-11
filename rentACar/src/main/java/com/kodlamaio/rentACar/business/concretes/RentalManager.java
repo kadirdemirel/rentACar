@@ -11,13 +11,16 @@ import com.kodlamaio.rentACar.business.request.rental.CreateRentalRequest;
 import com.kodlamaio.rentACar.business.request.rental.DeleteRentalRequest;
 import com.kodlamaio.rentACar.business.request.rental.UpdateRentalRequest;
 import com.kodlamaio.rentACar.business.response.rentals.ReadRentalResponse;
+import com.kodlamaio.rentACar.core.utilities.mapping.ModelMapperService;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.CarRepository;
+import com.kodlamaio.rentACar.dataAccess.abstracts.CityRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
 import com.kodlamaio.rentACar.entities.concretes.Car;
+import com.kodlamaio.rentACar.entities.concretes.City;
 import com.kodlamaio.rentACar.entities.concretes.Rental;
 
 import net.bytebuddy.asm.Advice.This;
@@ -29,20 +32,34 @@ public class RentalManager implements RentalService {
 	RentalRepository rentalRepository;
 	@Autowired
 	CarRepository carRepository;
+	@Autowired
+	CityRepository cityRepository;
+	@Autowired
+	ModelMapperService modelMapperService;
 
 	@Override
 	public Result add(CreateRentalRequest createRentalRequest) {
 		Car car = this.carRepository.getById(createRentalRequest.getCarId());
+		City pickUpCity= this.cityRepository.getById(createRentalRequest.getPickUpCityId());
+		City returnCity= this.cityRepository.getById(createRentalRequest.getReturnCityId());
 		car.setState(3);
-		Rental rental = new Rental();
+		Rental rental = this.modelMapperService.forRequest().map(createRentalRequest,Rental.class);
 		
 		LocalDate date = createRentalRequest.getPickupDate();
 		rental.setPickupDate(date);
 		LocalDate returnvalue= date.plusDays(createRentalRequest.getTotalDays());
 		rental.setReturnedDate(returnvalue);
-		rental.setTotalDays(createRentalRequest.getTotalDays());// hesaplattırılacaklar
+		
 		rental.setTotalPrice(createRentalRequest.getTotalDays() * car.getDailyPrice());// hesaplattırılacak
+		
 		rental.setCar(car);
+		rental.setPickUpCity(pickUpCity);
+		rental.setReturnCity(returnCity);
+		
+		if(rental.getPickUpCity().equals(rental.getReturnCity())) {
+			
+			rental.setTotalPrice(rental.getTotalPrice()+750);
+		}
 
 		this.rentalRepository.save(rental);
 		return new SuccessResult("ADDED.RENTAL");

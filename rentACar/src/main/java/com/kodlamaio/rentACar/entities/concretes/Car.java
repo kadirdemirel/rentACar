@@ -59,5 +59,8 @@ public class Car {
 	@OneToMany(mappedBy = "car")
 	List<Rental> rentals;
 
+	
+	
+
 
 }
