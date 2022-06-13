@@ -26,8 +26,12 @@ public class CreateUserRequest {
 	@NotNull
 	@Size(min = 2)
 	private String lastName;
-
-	private String nationalityId;
+	
+	@NotBlank
+	@NotEmpty
+	@NotNull
+	@Size(min = 11,max = 11)
+	private String nationality;
 	@NotBlank
 	@NotEmpty
 	@NotNull

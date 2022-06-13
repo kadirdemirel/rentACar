@@ -25,7 +25,7 @@ import com.kodlamaio.rentACar.entities.concretes.Brand;
 @Service
 public class BrandManager implements BrandService {
 
-	//Git constructor parametresine bak git onu newle bana onu ver.
+	// Git constructor parametresine bak git onu newle bana onu ver.
 	@Autowired
 	private BrandRepository brandRepository;
 	@Autowired
@@ -33,7 +33,7 @@ public class BrandManager implements BrandService {
 
 	@Override
 	public Result add(CreateBrandRequest createBrandRequest) {
-		//mapping
+		// mapping
 		checkIfBrandExitsByName(createBrandRequest.getName());
 		Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
 		this.brandRepository.save(brand);
@@ -69,6 +69,7 @@ public class BrandManager implements BrandService {
 
 	@Override
 	public DataResult<List<GetAllBrandsResponse>> getAll() {
+
 		List<Brand> brands = this.brandRepository.findAll();
 		List<GetAllBrandsResponse> response = brands.stream()
 				.map(brand -> this.modelMapperService.forResponse().map(brand, GetAllBrandsResponse.class))

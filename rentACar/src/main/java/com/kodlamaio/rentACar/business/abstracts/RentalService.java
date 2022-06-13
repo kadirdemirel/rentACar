@@ -5,6 +5,7 @@ import java.util.List;
 import com.kodlamaio.rentACar.business.request.rental.CreateRentalRequest;
 import com.kodlamaio.rentACar.business.request.rental.DeleteRentalRequest;
 import com.kodlamaio.rentACar.business.request.rental.UpdateRentalRequest;
+import com.kodlamaio.rentACar.business.response.rentals.GetAllRentalResponse;
 import com.kodlamaio.rentACar.business.response.rentals.ReadRentalResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -17,8 +18,8 @@ public interface RentalService {
 
 	Result delete(DeleteRentalRequest deleteRentalRequest);
 
-	DataResult<Rental> getById(ReadRentalResponse readRentalResponse);
+	DataResult<ReadRentalResponse> getById(int id);
 
-	DataResult<List<Rental>> getAll();
+	DataResult<List<GetAllRentalResponse>> getAll();
 
 }

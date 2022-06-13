@@ -53,10 +53,13 @@ public class AdditionalManager implements AdditionalService {
 	public Result update(UpdateAdditionalRequest updateAdditionalRequest) {
 		AdditionalItem additionalItem = this.additionalItemRepository
 				.getById(updateAdditionalRequest.getAdditionalItemId());
+		
+		
+		Additional additional = this.modelMapperService.forRequest().map(updateAdditionalRequest, Additional.class);
 		Rental rental = this.rentalRepository.getById(updateAdditionalRequest.getRentalId());
 		rental.setTotalPrice(rental.getTotalPrice() + (rental.getTotalDays() * additionalItem.getDailyPrice()));
-		rental.setId(updateAdditionalRequest.getRentalId());
-		Additional additional = this.modelMapperService.forRequest().map(updateAdditionalRequest, Additional.class);
+		rental.setId(rental.getId());
+		
 		this.additionalRepository.save(additional);
 		return new SuccessResult("UPDATED.ADDITIONAL");
 	}

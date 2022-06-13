@@ -28,8 +28,8 @@ public class User {
 	@Column(name = "last_name")
 	private String lastName;
 	
-	@Column(name = "nationality_id")
-	private String nationalityId;
+	@Column(name = "nationality")
+	private String nationality;
 	
 	@Column(name = "email")
 	private String email;
