@@ -19,21 +19,24 @@ import lombok.NoArgsConstructor;
 public class User {
 	@Id()
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	private int id;
-	
+
 	@Column(name = "first_name")
 	private String firstName;
-	
+
 	@Column(name = "last_name")
 	private String lastName;
-	
+
 	@Column(name = "nationality")
 	private String nationality;
-	
+
+	@Column(name = "birthDate")
+	private int birthDate;
+
 	@Column(name = "email")
 	private String email;
-	
+
 	@Column(name = "password")
 	private String password;
 

@@ -1,7 +1,6 @@
 package com.kodlamaio.rentACar;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
@@ -39,8 +38,7 @@ public class RentACarApplication {
 		for (FieldError fieldError : methodArgumentNotValidException.getBindingResult().getFieldErrors()) {
 			validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
 		}
-		ErrorDataResult<Object> errorDataResult = new ErrorDataResult<Object>(validationErrors, 
-				"VALIDATION.EXCEPTION");
+		ErrorDataResult<Object> errorDataResult = new ErrorDataResult<Object>(validationErrors, "VALIDATION.EXCEPTION");
 		return errorDataResult;
 	}
 

@@ -26,11 +26,15 @@ public class CreateUserRequest {
 	@NotNull
 	@Size(min = 2)
 	private String lastName;
-	
+
+
+	@NotNull
+	private int birthDate;
+
 	@NotBlank
 	@NotEmpty
 	@NotNull
-	@Size(min = 11,max = 11)
+	@Size(min = 11, max = 11)
 	private String nationality;
 	@NotBlank
 	@NotEmpty
