@@ -19,7 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "cars","cities","additionals" })
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "cars", "cities", "additionals" })
 @Entity
 @Data
 @NoArgsConstructor
@@ -43,19 +43,22 @@ public class Rental {
 	@Column(name = "total_price")
 	private double totalPrice;
 
-	@ManyToOne()	
+	@ManyToOne()
 	@JoinColumn(name = "car_id")
 	private Car car;
-	
-	@ManyToOne
-    @JoinColumn(name = "pick_up_city_id", referencedColumnName = "id")
-    private City pickUpCity;
 
-    @ManyToOne
-    @JoinColumn(name = "return_city_id", referencedColumnName = "id")
-    private City returnCity;
-    
-    @OneToMany(mappedBy = "rental")
+	@ManyToOne
+	@JoinColumn(name = "pick_up_city_id", referencedColumnName = "id")
+	private City pickUpCity;
+
+	@ManyToOne
+	@JoinColumn(name = "return_city_id", referencedColumnName = "id")
+	private City returnCity;
+
+	@OneToMany(mappedBy = "rental")
 	List<Additional> additionals;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 }

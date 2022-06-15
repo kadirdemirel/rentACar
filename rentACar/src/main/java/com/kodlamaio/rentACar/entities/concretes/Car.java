@@ -34,7 +34,6 @@ public class Car {
 	@Column(name = "id")
 	private int id;
 
-	
 	@Column(name = "description")
 	@NotBlank
 	@NotEmpty
@@ -58,6 +57,9 @@ public class Car {
 
 	@Column(name = "plate")
 	private String plate;
+
+	@Column(name = "min_findex")
+	private int minFindex;
 
 	@Min(0)
 	@Column(name = "kilometer")

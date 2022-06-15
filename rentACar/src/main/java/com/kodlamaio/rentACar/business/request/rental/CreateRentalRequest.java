@@ -7,9 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor 
+@AllArgsConstructor
 @NoArgsConstructor
-
 
 public class CreateRentalRequest {
 	private LocalDate pickupDate;
@@ -17,6 +16,6 @@ public class CreateRentalRequest {
 	private int carId;
 	private int pickUpCityId;
 	private int returnCityId;
-	
+	private int userId;
 
 }

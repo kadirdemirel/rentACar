@@ -16,5 +16,6 @@ public class CreateCarRequest {
 	private String plate;
 	private int kilometer;
 	private int cityId;
+	private int minFindex;
 
 }

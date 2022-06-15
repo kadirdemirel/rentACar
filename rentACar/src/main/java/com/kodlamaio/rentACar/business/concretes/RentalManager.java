@@ -7,12 +7,14 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kodlamaio.rentACar.business.abstracts.FindexService;
 import com.kodlamaio.rentACar.business.abstracts.RentalService;
 import com.kodlamaio.rentACar.business.request.rental.CreateRentalRequest;
 import com.kodlamaio.rentACar.business.request.rental.DeleteRentalRequest;
 import com.kodlamaio.rentACar.business.request.rental.UpdateRentalRequest;
 import com.kodlamaio.rentACar.business.response.rentals.GetAllRentalResponse;
 import com.kodlamaio.rentACar.business.response.rentals.ReadRentalResponse;
+import com.kodlamaio.rentACar.core.utilities.exceptions.BusinessException;
 import com.kodlamaio.rentACar.core.utilities.mapping.ModelMapperService;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -21,8 +23,10 @@ import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.CarRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.CityRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
+import com.kodlamaio.rentACar.dataAccess.abstracts.UserRepository;
 import com.kodlamaio.rentACar.entities.concretes.Car;
 import com.kodlamaio.rentACar.entities.concretes.Rental;
+import com.kodlamaio.rentACar.entities.concretes.User;
 
 @Service
 public class RentalManager implements RentalService {
@@ -35,11 +39,15 @@ public class RentalManager implements RentalService {
 	CityRepository cityRepository;
 	@Autowired
 	ModelMapperService modelMapperService;
+	@Autowired
+	FindexService findexService;
+	@Autowired
+	UserRepository userRepository;
 
 	@Override
 	public Result add(CreateRentalRequest createRentalRequest) {
 		Car car = this.carRepository.getById(createRentalRequest.getCarId());
-
+		User user = this.userRepository.getById(createRentalRequest.getUserId());
 		car.setState(3);
 		Rental rental = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
 
@@ -54,9 +62,13 @@ public class RentalManager implements RentalService {
 
 			rental.setTotalPrice(rental.getTotalPrice() + 750);
 		}
+		if (checkFindexValue(car.getMinFindex(), user.getNationality())) {
+			this.rentalRepository.save(rental);
+			return new SuccessResult("ADDED.RENTAL");
+		} else {
+			throw new BusinessException("NOT.ENOUGH.FINDEX.SCORE");
+		}
 
-		this.rentalRepository.save(rental);
-		return new SuccessResult("ADDED.RENTAL");
 	}
 
 	@Override
@@ -103,6 +115,14 @@ public class RentalManager implements RentalService {
 				.map(rental -> this.modelMapperService.forResponse().map(rental, GetAllRentalResponse.class))
 				.collect(Collectors.toList());
 		return new SuccessDataResult<List<GetAllRentalResponse>>(responses);
+	}
+
+	private boolean checkFindexValue(int findexScore, String nationality) {
+		boolean state = false;
+		if (findexService.findexScore(nationality) > findexScore) {
+			state = true;
+		}
+		return state;
 	}
 
 }
