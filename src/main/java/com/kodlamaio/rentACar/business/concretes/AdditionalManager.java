@@ -19,7 +19,7 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.AdditionalItemRepository;
-import com.kodlamaio.rentACar.dataAccess.abstracts.AdditionalRepository;
+import com.kodlamaio.rentACar.dataAccess.abstracts.OrderedAdditionalItemRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
 import com.kodlamaio.rentACar.entities.concretes.OrderedAdditionalItem;
 import com.kodlamaio.rentACar.entities.concretes.AdditionalItem;
@@ -28,7 +28,7 @@ import com.kodlamaio.rentACar.entities.concretes.Rental;
 @Service
 public class AdditionalManager implements AdditionalService {
 	@Autowired
-	private AdditionalRepository additionalRepository;
+	private OrderedAdditionalItemRepository additionalRepository;
 	@Autowired
 	private AdditionalItemRepository additionalItemRepository;
 	@Autowired

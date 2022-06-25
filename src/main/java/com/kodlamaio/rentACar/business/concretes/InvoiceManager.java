@@ -15,7 +15,7 @@ import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
-import com.kodlamaio.rentACar.dataAccess.abstracts.AdditionalRepository;
+import com.kodlamaio.rentACar.dataAccess.abstracts.OrderedAdditionalItemRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.InvoiceRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
 import com.kodlamaio.rentACar.entities.concretes.OrderedAdditionalItem;
@@ -31,7 +31,7 @@ public class InvoiceManager implements InvoiceService {
 	private RentalRepository rentalRepository;
 
 	@Autowired
-	private AdditionalRepository additionalRepository;
+	private OrderedAdditionalItemRepository additionalRepository;
 
 	@Autowired
 	private ModelMapperService modelMapperService;
