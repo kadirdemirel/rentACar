@@ -31,8 +31,8 @@ public class ColorManager implements ColorService {
 
 	@Override
 	public Result add(CreateColorRequest createColorRequest) {
-		;
-		checkIfBrandExitsByName(createColorRequest.getName());
+
+		checkIfColorExitsByName(createColorRequest.getName());
 		Color color = this.modelMapperService.forRequest().map(createColorRequest, Color.class);
 		this.colorRepository.save(color);
 		return new SuccessResult("ADDED.COLOR");
@@ -42,7 +42,7 @@ public class ColorManager implements ColorService {
 	@Override
 	public Result update(UpdateColorRequest updateColorRequest) {
 
-		checkIfBrandExitsByName(updateColorRequest.getName());
+		checkIfColorExitsByName(updateColorRequest.getName());
 		Color color = this.modelMapperService.forRequest().map(updateColorRequest, Color.class);
 		this.colorRepository.save(color);
 		return new SuccessResult("UPDATED.COLOR");
@@ -72,7 +72,7 @@ public class ColorManager implements ColorService {
 		return new SuccessDataResult<List<GetAllColorsResponse>>(response);
 	}
 
-	private void checkIfBrandExitsByName(String name) {
+	private void checkIfColorExitsByName(String name) {
 		Color currentColor = this.colorRepository.findByName(name);
 		if (currentColor != null) {
 			throw new BusinessException("COLOR.EXITS");

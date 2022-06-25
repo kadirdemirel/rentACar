@@ -21,7 +21,7 @@ import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.AdditionalItemRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.AdditionalRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
-import com.kodlamaio.rentACar.entities.concretes.Additional;
+import com.kodlamaio.rentACar.entities.concretes.OrderedAdditionalItem;
 import com.kodlamaio.rentACar.entities.concretes.AdditionalItem;
 import com.kodlamaio.rentACar.entities.concretes.Rental;
 
@@ -39,11 +39,11 @@ public class AdditionalManager implements AdditionalService {
 	@Override
 	public Result add(CreateAdditionalRequest createAdditionalRequest) {
 
-		Additional additional = this.modelMapperService.forRequest().map(createAdditionalRequest, Additional.class);
+		OrderedAdditionalItem additional = this.modelMapperService.forRequest().map(createAdditionalRequest, OrderedAdditionalItem.class);
 		LocalDate date = createAdditionalRequest.getPickupDate();
-		additional.setPickupDate(date);
+		additional.setPickUpDate(date);
 		LocalDate returnvalue = date.plusDays(createAdditionalRequest.getTotalDays());
-		additional.setReturnedDate(returnvalue);
+		additional.setReturnDate(returnvalue);
 		double additionalItemTotalPrice = this.additionalItemRepository
 				.getById(createAdditionalRequest.getAdditionalItemId()).getDailyPrice();
 		additional.setTotalPrice(additionalItemTotalPrice * createAdditionalRequest.getTotalDays());
@@ -56,7 +56,7 @@ public class AdditionalManager implements AdditionalService {
 		AdditionalItem additionalItem = this.additionalItemRepository
 				.getById(updateAdditionalRequest.getAdditionalItemId());
 
-		Additional additional = this.modelMapperService.forRequest().map(updateAdditionalRequest, Additional.class);
+		OrderedAdditionalItem additional = this.modelMapperService.forRequest().map(updateAdditionalRequest, OrderedAdditionalItem.class);
 		Rental rental = this.rentalRepository.getById(updateAdditionalRequest.getRentalId());
 		rental.setTotalPrice(rental.getTotalPrice() + (rental.getTotalDays() * additionalItem.getDailyPrice()));
 		rental.setId(rental.getId());
@@ -67,14 +67,14 @@ public class AdditionalManager implements AdditionalService {
 
 	@Override
 	public Result delete(DeleteAdditionalRequest deleteAdditionalRequest) {
-		Additional additional = this.modelMapperService.forRequest().map(deleteAdditionalRequest, Additional.class);
+		OrderedAdditionalItem additional = this.modelMapperService.forRequest().map(deleteAdditionalRequest, OrderedAdditionalItem.class);
 		this.additionalRepository.delete(additional);
 		return new SuccessResult("DELETED.ADDITIONAL");
 	}
 
 	@Override
 	public DataResult<ReadAdditionalResponse> getById(int id) {
-		Additional additional = this.additionalRepository.getById(id);
+		OrderedAdditionalItem additional = this.additionalRepository.getById(id);
 		ReadAdditionalResponse response = this.modelMapperService.forResponse().map(additional,
 				ReadAdditionalResponse.class);
 		return new SuccessDataResult<ReadAdditionalResponse>(response);
@@ -82,7 +82,7 @@ public class AdditionalManager implements AdditionalService {
 
 	@Override
 	public DataResult<List<GetAllAdditionalsResponse>> getAll() {
-		List<Additional> additionals = this.additionalRepository.findAll();
+		List<OrderedAdditionalItem> additionals = this.additionalRepository.findAll();
 		List<GetAllAdditionalsResponse> response = additionals.stream().map(
 				additional -> this.modelMapperService.forResponse().map(additional, GetAllAdditionalsResponse.class))
 				.collect(Collectors.toList());

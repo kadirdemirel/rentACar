@@ -15,12 +15,15 @@ import com.kodlamaio.rentACar.entities.concretes.Address;
 @Service
 public class AddressManager implements AddressService {
 
-	@Autowired
 	UserRepository userRepository;
-	@Autowired
 	ModelMapperService modelMapperService;
-	@Autowired
 	AddressRepository addressRepository;
+
+	@Autowired
+	public AddressManager(UserRepository userRepository, ModelMapperService modelMapperService,
+			AddressRepository addressRepository) {
+		this.userRepository = userRepository;
+	}
 
 	@Override
 	public Result addSameAddress(CreateAddressRequest createAddressRequest) {

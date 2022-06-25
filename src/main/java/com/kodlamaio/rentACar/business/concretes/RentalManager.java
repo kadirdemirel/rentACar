@@ -46,9 +46,11 @@ public class RentalManager implements RentalService {
 
 	@Override
 	public Result add(CreateRentalRequest createRentalRequest) {
-		Car car = this.carRepository.getById(createRentalRequest.getCarId());
-		User user = this.userRepository.getById(createRentalRequest.getUserId());
-
+		Car car = this.carRepository.findById(createRentalRequest.getCarId());
+		User user = this.userRepository.findById(createRentalRequest.getUserId()).get();
+		//checkIfCarExists
+		//Araba durumu kontrol edilmeli
+		//Tarihler kontrol edilmeli
 		car.setState(3);
 		Rental rental = this.modelMapperService.forRequest().map(createRentalRequest, Rental.class);
 
@@ -58,7 +60,7 @@ public class RentalManager implements RentalService {
 		rental.setReturnedDate(returnvalue);
 
 		rental.setTotalPrice(createRentalRequest.getTotalDays() * car.getDailyPrice());// hesaplattırılacak
-
+		//Refactor
 		if (!rental.getPickUpCity().equals(rental.getReturnCity())) {
 
 			rental.setTotalPrice(rental.getTotalPrice() + 750);

@@ -15,25 +15,35 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "maintenances")
-public class Maintenance {
-	@Id()
+@Entity
+@Table(name = "ordered_additional_items")
+public class OrderedAdditionalItem {
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "date_sent")
-	private LocalDate dateSent;
-
-	@Column(name = "date_returned")
-	private LocalDate dateReturned;
+	@ManyToOne
+	@JoinColumn(name = "additional_item_id")
+	private AdditionalItem additionalItem;
 
 	@ManyToOne
-	@JoinColumn(name = "car_id")
-	private Car car;
+	@JoinColumn(name = "rental_id")
+	private Rental rental;
+
+	@Column(name = "total_price")
+	private double totalPrice;
+
+	@Column(name = "total_days")
+	private int totalDays;
+
+	@Column(name = "pick_up_date")
+	private LocalDate pickUpDate;
+
+	@Column(name = "return_date")
+	private LocalDate returnDate;
 
 }

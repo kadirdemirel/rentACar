@@ -36,6 +36,7 @@ public class BrandManager implements BrandService {
 		// mapping
 		checkIfBrandExitsByName(createBrandRequest.getName());
 		Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
+
 		this.brandRepository.save(brand);
 		return new SuccessResult("BRAND.ADDED");
 

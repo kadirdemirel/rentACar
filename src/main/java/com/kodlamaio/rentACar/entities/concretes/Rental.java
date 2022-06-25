@@ -14,13 +14,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "cars", "cities", "additionals" })
 @Entity
 @Data
 @NoArgsConstructor
@@ -49,20 +46,20 @@ public class Rental {
 	private Car car;
 
 	@ManyToOne
-	@JoinColumn(name = "pick_up_city_id", referencedColumnName = "id")
+	@JoinColumn(name = "pick_up_city_id")
 	private City pickUpCity;
 
 	@ManyToOne
-	@JoinColumn(name = "return_city_id", referencedColumnName = "id")
+	@JoinColumn(name = "return_city_id")
 	private City returnCity;
 
 	@OneToMany(mappedBy = "rental")
-	List<Additional> additionals;
-	
+	List<OrderedAdditionalItem> additionals;
+
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-	
+
 	@OneToOne(mappedBy = "rental")
 	private Invoice invoice;
 
