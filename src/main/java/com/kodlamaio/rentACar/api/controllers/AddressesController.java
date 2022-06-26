@@ -1,5 +1,7 @@
 package com.kodlamaio.rentACar.api.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,12 +19,12 @@ public class AddressesController {
 	AddressService addressService;
 
 	@PostMapping("/addsameaddress")
-	public Result addSameAddress(@RequestBody CreateAddressRequest createAddressRequest) {
+	public Result addSameAddress(@RequestBody @Valid CreateAddressRequest createAddressRequest) {
 		return this.addressService.addSameAddress(createAddressRequest);
 	}
 
 	@PostMapping("/adddifferentaddress")
-	public Result addDifferentAddress(@RequestBody CreateAddressRequest createAddressRequest) {
+	public Result addDifferentAddress(@RequestBody @Valid CreateAddressRequest createAddressRequest) {
 		return this.addressService.addDifferentAddress(createAddressRequest);
 	}
 }

@@ -9,7 +9,6 @@ import com.kodlamaio.rentACar.business.response.maintenances.GetAllMaintenancesR
 import com.kodlamaio.rentACar.business.response.maintenances.ReadMaintenanceResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
-import com.kodlamaio.rentACar.entities.concretes.Maintenance;
 
 public interface MaintenanceService {
 	Result add(CreateMaintenanceRequest createMaintenanceRequest);

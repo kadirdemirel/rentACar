@@ -23,6 +23,8 @@ public class AddressManager implements AddressService {
 	public AddressManager(UserRepository userRepository, ModelMapperService modelMapperService,
 			AddressRepository addressRepository) {
 		this.userRepository = userRepository;
+		this.modelMapperService = modelMapperService;
+		this.addressRepository = addressRepository;
 	}
 
 	@Override

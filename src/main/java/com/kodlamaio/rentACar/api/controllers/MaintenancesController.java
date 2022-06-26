@@ -2,6 +2,8 @@ package com.kodlamaio.rentACar.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +29,7 @@ public class MaintenancesController {
 	MaintenanceService maintenanceService;
 
 	@PostMapping("/add")
-	public Result add(@RequestBody CreateMaintenanceRequest createMaintenanceRequest) {
+	public Result add(@RequestBody @Valid CreateMaintenanceRequest createMaintenanceRequest) {
 		return this.maintenanceService.add(createMaintenanceRequest);
 
 	}

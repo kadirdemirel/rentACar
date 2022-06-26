@@ -30,10 +30,10 @@ public class Rental {
 	private int id;
 
 	@Column(name = "pickup_date")
-	private LocalDate pickupDate;
+	private LocalDate pickUpDate;
 
-	@Column(name = "returned_date")
-	private LocalDate returnedDate;
+	@Column(name = "return_date")
+	private LocalDate returnDate;
 
 	@Column(name = "total_days")
 	private int totalDays;

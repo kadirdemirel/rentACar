@@ -1,8 +1,7 @@
-package com.kodlamaio.rentACar.business.request.maintenance;
+package com.kodlamaio.rentACar.business.request.orderedAdditionalItems;
 
 import java.time.LocalDate;
 
-import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -14,16 +13,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateMaintenanceRequest {
-	
-	@FutureOrPresent
-	private LocalDate sentDate;
-	
-	@Future
-	private LocalDate returnedDate;
-	
+public class UpdateOrderedAdditionalItemRequest {
+	private int id;
+
+	@Min(1)
+	private int additionalItemId;
+
+	@Min(1)
+	private int rentalId;
+
 	@NotNull
 	@Min(1)
-	private int carId;
+	private int totalDays;
 
+	@FutureOrPresent
+	private LocalDate pickupDate;
 }

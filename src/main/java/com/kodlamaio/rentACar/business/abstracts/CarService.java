@@ -9,7 +9,6 @@ import com.kodlamaio.rentACar.business.response.cars.GetAllCarsResponse;
 import com.kodlamaio.rentACar.business.response.cars.ReadCarResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
-import com.kodlamaio.rentACar.entities.concretes.Car;
 
 public interface CarService {
 
@@ -21,7 +20,7 @@ public interface CarService {
 
 	DataResult<List<GetAllCarsResponse>> getAll();
 
-	DataResult<Car> getById(ReadCarResponse readCarResponse);
+	DataResult<ReadCarResponse> getById(int id);
 
 	DataResult<List<GetAllCarsResponse>> getByState(int state);
 

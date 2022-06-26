@@ -21,7 +21,6 @@ import com.kodlamaio.rentACar.business.response.cars.GetAllCarsResponse;
 import com.kodlamaio.rentACar.business.response.cars.ReadCarResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
-import com.kodlamaio.rentACar.entities.concretes.Car;
 
 @RestController
 @RequestMapping("/api/cars")
@@ -37,7 +36,7 @@ public class CarsController {
 	}
 
 	@PostMapping("/update")
-	public Result update(@RequestBody UpdateCarRequest updateCarRequest) {
+	public Result update(@RequestBody @Valid UpdateCarRequest updateCarRequest) {
 		return this.carService.update(updateCarRequest);
 	}
 
@@ -47,8 +46,8 @@ public class CarsController {
 	}
 
 	@GetMapping("/getbyid")
-	public DataResult<Car> getById(@RequestBody ReadCarResponse readCarResponse) {
-		return this.carService.getById(readCarResponse);
+	DataResult<ReadCarResponse> getById(@RequestParam int id) {
+		return this.carService.getById(id);
 	}
 
 	@GetMapping("/getall")

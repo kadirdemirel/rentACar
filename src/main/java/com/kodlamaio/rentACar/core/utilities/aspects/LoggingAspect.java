@@ -13,6 +13,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @Aspect
 @Component
@@ -21,6 +22,7 @@ public class LoggingAspect {
 	@Before("execution (* com.kodlamaio.rentACar.business.concretes.*.*(..))")
 	public void log(JoinPoint joinPoint) {
 		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
 		try {
 			MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 			StringBuilder stringBuilder = new StringBuilder();

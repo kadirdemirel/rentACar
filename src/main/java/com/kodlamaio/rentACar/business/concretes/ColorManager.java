@@ -24,10 +24,15 @@ import com.kodlamaio.rentACar.entities.concretes.Color;
 @Service
 public class ColorManager implements ColorService {
 
-	@Autowired
 	private ColorRepository colorRepository;
-	@Autowired
 	private ModelMapperService modelMapperService;
+
+	@Autowired
+	public ColorManager(ColorRepository colorRepository, ModelMapperService modelMapperService) {
+
+		this.colorRepository = colorRepository;
+		this.modelMapperService = modelMapperService;
+	}
 
 	@Override
 	public Result add(CreateColorRequest createColorRequest) {
@@ -44,6 +49,7 @@ public class ColorManager implements ColorService {
 
 		checkIfColorExitsByName(updateColorRequest.getName());
 		Color color = this.modelMapperService.forRequest().map(updateColorRequest, Color.class);
+		checkIfColorExistsById(updateColorRequest.getId());
 		this.colorRepository.save(color);
 		return new SuccessResult("UPDATED.COLOR");
 	}
@@ -52,13 +58,14 @@ public class ColorManager implements ColorService {
 	public Result delete(DeleteColorRequest deleteColorRequest) {
 
 		Color color = this.modelMapperService.forRequest().map(deleteColorRequest, Color.class);
+		checkIfColorExistsById(deleteColorRequest.getId());
 		this.colorRepository.delete(color);
 		return new SuccessResult("DELETED.COLOR");
 	}
 
 	@Override
 	public DataResult<ReadColorResponse> getById(int id) {
-		Color color = this.colorRepository.getById(id);
+		Color color = checkIfColorExistsById(id);
 		ReadColorResponse readColorResponse = this.modelMapperService.forResponse().map(color, ReadColorResponse.class);
 		return new SuccessDataResult<ReadColorResponse>(readColorResponse);
 	}
@@ -77,6 +84,17 @@ public class ColorManager implements ColorService {
 		if (currentColor != null) {
 			throw new BusinessException("COLOR.EXITS");
 		}
+	}
+
+	private Color checkIfColorExistsById(int id) {
+		Color currentColor;
+		try {
+			currentColor = this.colorRepository.findById(id).get();
+
+		} catch (Exception e) {
+			throw new BusinessException("COLOR.NOT.EXISTS");
+		}
+		return currentColor;
 	}
 
 }

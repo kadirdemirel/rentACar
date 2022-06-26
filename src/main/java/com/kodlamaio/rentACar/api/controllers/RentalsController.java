@@ -2,6 +2,8 @@ package com.kodlamaio.rentACar.api.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,14 +29,14 @@ public class RentalsController {
 	RentalService rentalService;
 
 	@PostMapping("/add")
-	public Result add(@RequestBody CreateRentalRequest createRentalRequest) {
+	public Result add(@RequestBody @Valid CreateRentalRequest createRentalRequest) {
 
 		return this.rentalService.add(createRentalRequest);
 
 	}
 
 	@PostMapping("/update")
-	public Result update(@RequestBody UpdateRentalRequest updateRentalRequest) {
+	public Result update(@RequestBody @Valid UpdateRentalRequest updateRentalRequest) {
 		return this.rentalService.update(updateRentalRequest);
 	}
 

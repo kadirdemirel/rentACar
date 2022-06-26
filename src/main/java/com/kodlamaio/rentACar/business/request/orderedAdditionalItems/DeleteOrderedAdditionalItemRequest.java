@@ -1,6 +1,4 @@
-package com.kodlamaio.rentACar.business.request.cars;
-
-import javax.validation.constraints.Min;
+package com.kodlamaio.rentACar.business.request.orderedAdditionalItems;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,9 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeleteCarRequest {
-
-
-	@Min(1)
+public class DeleteOrderedAdditionalItemRequest {
 	private int id;
 }
