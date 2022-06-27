@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kodlamaio.rentACar.business.abstracts.AddressService;
 import com.kodlamaio.rentACar.business.request.addresses.CreateAddressRequest;
+import com.kodlamaio.rentACar.business.request.addresses.UpdateAddressRequest;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
 
 @RestController
@@ -26,5 +27,15 @@ public class AddressesController {
 	@PostMapping("/adddifferentaddress")
 	public Result addDifferentAddress(@RequestBody @Valid CreateAddressRequest createAddressRequest) {
 		return this.addressService.addDifferentAddress(createAddressRequest);
+	}
+
+	@PostMapping("/updatesameaddress")
+	public Result updateSameAddress(@RequestBody @Valid UpdateAddressRequest updateAddressRequest) {
+		return this.addressService.updateSameAddress(updateAddressRequest);
+	}
+
+	@PostMapping("/updatedifferentaddress")
+	public Result updateDifferentAddress(@RequestBody @Valid UpdateAddressRequest updateAddressRequest) {
+		return this.addressService.updateDifferentAddress(updateAddressRequest);
 	}
 }

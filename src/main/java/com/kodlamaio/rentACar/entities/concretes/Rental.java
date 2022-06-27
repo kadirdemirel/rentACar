@@ -57,8 +57,8 @@ public class Rental {
 	List<OrderedAdditionalItem> additionals;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
 
 	@OneToOne(mappedBy = "rental")
 	private Invoice invoice;

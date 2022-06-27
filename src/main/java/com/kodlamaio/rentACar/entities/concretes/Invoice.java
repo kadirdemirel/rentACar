@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +25,7 @@ public class Invoice {
 	private int id;
 
 	@Column(name = "invoice_number")
-	private int invoiceNumber;
+	private String invoiceNumber;
 
 	@Column(name = "total_price")
 	private double totalPrice;

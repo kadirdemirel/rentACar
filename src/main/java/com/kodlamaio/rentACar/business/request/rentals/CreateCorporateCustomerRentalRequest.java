@@ -1,4 +1,4 @@
-package com.kodlamaio.rentACar.business.request.rental;
+package com.kodlamaio.rentACar.business.request.rentals;
 
 import java.time.LocalDate;
 
@@ -14,15 +14,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateRentalRequest {
-
-	private int id;
-
+public class CreateCorporateCustomerRentalRequest {
 	@FutureOrPresent
 	private LocalDate pickUpDate;
 
-	@NotNull
 	@Min(1)
+	@NotNull
 	private int totalDays;
 
 	@Min(1)
@@ -39,6 +36,6 @@ public class UpdateRentalRequest {
 	private int returnCityId;
 
 	@Min(1)
-	private int userId;
+	private int corporateCustomerId;
 
 }

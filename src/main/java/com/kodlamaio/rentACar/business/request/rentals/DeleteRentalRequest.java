@@ -1,4 +1,4 @@
-package com.kodlamaio.rentACar.business.request.rental;
+package com.kodlamaio.rentACar.business.request.rentals;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

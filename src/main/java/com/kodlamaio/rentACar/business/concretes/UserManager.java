@@ -8,11 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.kodlamaio.rentACar.business.abstracts.UserCheckService;
 import com.kodlamaio.rentACar.business.abstracts.UserService;
 import com.kodlamaio.rentACar.business.request.users.CreateUserRequest;
 import com.kodlamaio.rentACar.business.response.users.GetAllUserResponse;
-import com.kodlamaio.rentACar.core.utilities.exceptions.BusinessException;
 import com.kodlamaio.rentACar.core.utilities.mapping.ModelMapperService;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -23,27 +21,23 @@ import com.kodlamaio.rentACar.entities.concretes.User;
 
 @Service
 public class UserManager implements UserService {
-	@Autowired
-	UserRepository userRepository;
-	@Autowired
-	ModelMapperService modelMapperService;
-	@Autowired
-	private UserCheckService userCheckService;
 
-	public UserManager(UserCheckService userCheckService) {
-		this.userCheckService = userCheckService;
+	ModelMapperService modelMapperService;
+	UserRepository userRepository;
+
+	@Autowired
+	public UserManager(UserRepository userRepository, ModelMapperService modelMapperService) {
+		super();
+		this.userRepository = userRepository;
+		this.modelMapperService = modelMapperService;
 	}
 
 	@Override
 	public Result add(CreateUserRequest createUserRequest) {
-		checkIfUserExistsByNationalityId(createUserRequest.getNationality());
 		User user = this.modelMapperService.forRequest().map(createUserRequest, User.class);
-		if (this.userCheckService.checkIfRealPerson(user)) {
-			this.userRepository.save(user);
-			return new SuccessResult("ADDED.USER");
-		} else {
-			throw new BusinessException("NOT.ADDED");
-		}
+
+		this.userRepository.save(user);
+		return new SuccessResult("ADDED.USER");
 
 	}
 
@@ -57,14 +51,6 @@ public class UserManager implements UserService {
 				.collect(Collectors.toList());
 
 		return new SuccessDataResult<List<GetAllUserResponse>>(response);
-	}
-
-	private void checkIfUserExistsByNationalityId(String nationality) {
-		User currentNationalityId = this.userRepository.findByNationality(nationality);
-		if (currentNationalityId != null) {
-			throw new BusinessException("USER.EXİST");
-		}
-
 	}
 
 }

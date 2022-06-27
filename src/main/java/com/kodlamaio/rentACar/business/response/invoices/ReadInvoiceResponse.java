@@ -1,4 +1,4 @@
-package com.kodlamaio.rentACar.business.request.addresses;
+package com.kodlamaio.rentACar.business.response.invoices;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -9,19 +9,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CreateAddressRequest {
+@NoArgsConstructor
+public class ReadInvoiceResponse {
+	@Min(1)
+	private int id;
 
 	@NotBlank
 	@NotNull
-	private String deliveryAddress;
-
-	@NotBlank
-	@NotNull
-	private String billAddress;
+	private String invoiceNumber;
 
 	@Min(1)
-	private int userId;
+	private int rentalId;
 
+	@Min(0)
+	private double totalPrice;
+
+	private int state;
 }

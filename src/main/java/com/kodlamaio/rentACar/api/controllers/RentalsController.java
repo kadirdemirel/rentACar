@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kodlamaio.rentACar.business.abstracts.RentalService;
-import com.kodlamaio.rentACar.business.request.rental.CreateRentalRequest;
-import com.kodlamaio.rentACar.business.request.rental.DeleteRentalRequest;
-import com.kodlamaio.rentACar.business.request.rental.UpdateRentalRequest;
+import com.kodlamaio.rentACar.business.request.rentals.CreateCorporateCustomerRentalRequest;
+import com.kodlamaio.rentACar.business.request.rentals.CreateIndividualCustomerRentalRequest;
+import com.kodlamaio.rentACar.business.request.rentals.DeleteRentalRequest;
+import com.kodlamaio.rentACar.business.request.rentals.UpdateCorporateCustomerRentalRequest;
+import com.kodlamaio.rentACar.business.request.rentals.UpdateIndividualCustomerRentalRequest;
 import com.kodlamaio.rentACar.business.response.rentals.GetAllRentalResponse;
 import com.kodlamaio.rentACar.business.response.rentals.ReadRentalResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
@@ -28,16 +30,30 @@ public class RentalsController {
 	@Autowired
 	RentalService rentalService;
 
-	@PostMapping("/add")
-	public Result add(@RequestBody @Valid CreateRentalRequest createRentalRequest) {
+	@PostMapping("/addIndividualCustomer")
+	public Result addIndividualCustomer(
+			@RequestBody @Valid CreateIndividualCustomerRentalRequest createIndividualCustomerRentalRequest) {
 
-		return this.rentalService.add(createRentalRequest);
+		return this.rentalService.addIndividualCustomerRental(createIndividualCustomerRentalRequest);
 
 	}
 
-	@PostMapping("/update")
-	public Result update(@RequestBody @Valid UpdateRentalRequest updateRentalRequest) {
-		return this.rentalService.update(updateRentalRequest);
+	@PostMapping("/addcorporatecustomer")
+	public Result addCorporateCustomer(
+			@RequestBody @Valid CreateCorporateCustomerRentalRequest createCorporateCustomerRentalRequest) {
+		return this.rentalService.addCorporateCustomerRental(createCorporateCustomerRentalRequest);
+	}
+
+	@PostMapping("/updateindividualcustomer")
+	Result updateIndividualCustomer(
+			@RequestBody @Valid UpdateIndividualCustomerRentalRequest updateIndividualCustomerRentalRequest) {
+		return this.rentalService.updateIndividualCustomerRental(updateIndividualCustomerRentalRequest);
+	}
+
+	@PostMapping("/updatecorporatecustomer")
+	Result updateCorporateCustomer(
+			@RequestBody @Valid UpdateCorporateCustomerRentalRequest updateCorporateCustomerRentalRequest) {
+		return this.rentalService.updateCorporateCustomerRental(updateCorporateCustomerRentalRequest);
 	}
 
 	@DeleteMapping("/delete")
