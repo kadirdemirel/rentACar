@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateAdditionalItemRequest {
 
+	@Min(1)
 	private int id;
 
 	@NotBlank
