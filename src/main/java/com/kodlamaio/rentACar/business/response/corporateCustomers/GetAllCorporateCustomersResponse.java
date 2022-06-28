@@ -1,6 +1,7 @@
-package com.kodlamaio.rentACar.business.request.corporateCustomers;
+package com.kodlamaio.rentACar.business.response.corporateCustomers;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -11,7 +12,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateCorporateCustomerRequest {
+public class GetAllCorporateCustomersResponse {
+	@Min(1)
+	private int corporateCustomerId;
 
 	@NotBlank
 	@NotNull

@@ -21,6 +21,7 @@ import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.IndividualCustomerRepository;
 import com.kodlamaio.rentACar.entities.concretes.IndividualCustomer;
+import com.kodlamaio.rentACar.entities.concretes.Invoice;
 
 @Service
 public class IndividualCustomerManager implements IndividualCustomerService {
@@ -40,7 +41,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	@Override
 	public Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest) {
 		checkIfIndividualCustomerExistsByNationalityId(createIndividualCustomerRequest.getNationality());
-
+		checkIfIndividualCustomerExitsByEmail(createIndividualCustomerRequest.getEmail());
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest()
 				.map(createIndividualCustomerRequest, IndividualCustomer.class);
 		checkIfRealIndividualCustomer(individualCustomer);
@@ -50,7 +51,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
 	@Override
 	public Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest) {
-
+		checkIfIndividualCustomerExitsByEmail(updateIndividualCustomerRequest.getEmail());
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest()
 				.map(updateIndividualCustomerRequest, IndividualCustomer.class);
 
@@ -124,6 +125,20 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		individualCustomer.setLastName(tempIndividualCustomer.getLastName());
 		individualCustomer.setBirthDate(tempIndividualCustomer.getBirthDate());
 		individualCustomer.setNationality(tempIndividualCustomer.getNationality());
+	}
+
+	private void checkIfIndividualCustomerExitsByEmail(String email) {
+		IndividualCustomer individualCustomer = this.individualCustomerRepository.findByEmail(email);
+		if (individualCustomer != null) {
+			throw new BusinessException("INDIVIDUAL.CUSTOMER.EXITS");
+		}
+	}
+
+	private void checkIfEmailExists(String email) {
+		IndividualCustomer individualCustomer = this.individualCustomerRepository.findByEmail(email);
+		if (individualCustomer != null) {
+			throw new BusinessException("INDIVIDUAL.CUSTOMER.NOT.EXISTS");
+		}
 	}
 
 }
