@@ -74,6 +74,11 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 		return new SuccessDataResult<List<GetAllCorporateCustomersResponse>>(response);
 	}
 
+	@Override
+	public CorporateCustomer getByCorporateCustomerId(int id) {
+		return checkIfCorporateCustomerExistsById(id);
+	}
+
 	private CorporateCustomer checkIfCorporateCustomerExistsById(int id) {
 		CorporateCustomer currentCorporateCustomer;
 		try {

@@ -7,7 +7,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kodlamaio.rentACar.business.abstracts.CarService;
+import com.kodlamaio.rentACar.business.abstracts.CorporateCustomerService;
 import com.kodlamaio.rentACar.business.abstracts.FindexService;
+import com.kodlamaio.rentACar.business.abstracts.IndividualCustomerService;
 import com.kodlamaio.rentACar.business.abstracts.RentalService;
 import com.kodlamaio.rentACar.business.request.rentals.CreateCorporateCustomerRentalRequest;
 import com.kodlamaio.rentACar.business.request.rentals.CreateIndividualCustomerRentalRequest;
@@ -22,10 +25,7 @@ import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
-import com.kodlamaio.rentACar.dataAccess.abstracts.CarRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.CityRepository;
-import com.kodlamaio.rentACar.dataAccess.abstracts.CorporateCustomerRepository;
-import com.kodlamaio.rentACar.dataAccess.abstracts.IndividualCustomerRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
 import com.kodlamaio.rentACar.entities.concretes.Car;
 import com.kodlamaio.rentACar.entities.concretes.CorporateCustomer;
@@ -36,23 +36,23 @@ import com.kodlamaio.rentACar.entities.concretes.Rental;
 public class RentalManager implements RentalService {
 
 	private RentalRepository rentalRepository;
-	private CarRepository carRepository;
+	private CarService carService;
 	private ModelMapperService modelMapperService;
 	private FindexService findexService;
-	private IndividualCustomerRepository individualCustomerRepository;
-	private CorporateCustomerRepository corporateCustomerRepository;
+	private IndividualCustomerService individualCustomerService;
+	private CorporateCustomerService corporateCustomerService;
 
+//bir servis sadece kendi repository'sini enjekte edebilir.
 	@Autowired
-	public RentalManager(RentalRepository rentalRepository, CarRepository carRepository, CityRepository cityRepository,
+	public RentalManager(RentalRepository rentalRepository, CarService carService, CityRepository cityRepository,
 			ModelMapperService modelMapperService, FindexService findexService,
-			IndividualCustomerRepository individualCustomerRepository,
-			CorporateCustomerRepository corporateCustomerRepository) {
+			IndividualCustomerService individualCustomerService, CorporateCustomerService corporateCustomerService) {
 		this.rentalRepository = rentalRepository;
-		this.carRepository = carRepository;
+		this.carService = carService;
 		this.modelMapperService = modelMapperService;
 		this.findexService = findexService;
-		this.individualCustomerRepository = individualCustomerRepository;
-		this.corporateCustomerRepository = corporateCustomerRepository;
+		this.individualCustomerService = individualCustomerService;
+		this.corporateCustomerService = corporateCustomerService;
 	}
 
 	@Override
@@ -151,6 +151,11 @@ public class RentalManager implements RentalService {
 		return new SuccessDataResult<List<GetAllRentalResponse>>(responses);
 	}
 
+	@Override
+	public Rental geyByRentalId(int id) {
+		return checkIfRentalExistsById(id);
+	}
+
 	private void checkFindexValue(int findexScore, String nationality) {
 
 		if (findexService.findexScore(nationality) < findexScore) {
@@ -159,8 +164,9 @@ public class RentalManager implements RentalService {
 
 	}
 
+//düzelt
 	private Car checkIfCarExistsById(int id) {
-		Car currentCar = this.carRepository.findById(id);
+		Car currentCar = this.carService.getByCarId(id);
 		if (currentCar == null) {
 			throw new BusinessException("CAR.NOT.EXISTS");
 		}
@@ -221,7 +227,7 @@ public class RentalManager implements RentalService {
 
 		CorporateCustomer currentCorporateCustomer;
 		try {
-			currentCorporateCustomer = this.corporateCustomerRepository.findById(id).get();
+			currentCorporateCustomer = this.corporateCustomerService.getByCorporateCustomerId(id);
 		} catch (Exception e) {
 			throw new BusinessException("CORPORATE.CUSTOMER.NOT.EXISTS");
 		}
@@ -233,7 +239,7 @@ public class RentalManager implements RentalService {
 
 		IndividualCustomer currentIndividualCustomer;
 		try {
-			currentIndividualCustomer = this.individualCustomerRepository.findById(id).get();
+			currentIndividualCustomer = this.individualCustomerService.getByIndividualCustomerId(id);
 		} catch (Exception e) {
 			throw new BusinessException("INDIVIDUAL.CUSTOMER.NOT.EXISTS");
 		}

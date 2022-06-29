@@ -78,6 +78,11 @@ public class AdditionalItemManager implements AdditionalItemService {
 		return new SuccessDataResult<List<GetAllAdditionalItemsResponse>>(response);
 	}
 
+	@Override
+	public AdditionalItem getByAditionalItemId(int id) {
+		return checkIfAdditionalItemExistsById(id);
+	}
+
 	private AdditionalItem checkIfAdditionalItemExistsById(int id) {
 		AdditionalItem additionalItem;
 		try {

@@ -82,6 +82,12 @@ public class BrandManager implements BrandService {
 		return new SuccessDataResult<List<GetAllBrandsResponse>>(response);
 	}
 
+	@Override
+	public Brand getByBrandId(int id) {
+
+		return checkIfBrandExistsById(id);
+	}
+
 	private void checkIfBrandExistsByName(String name) {
 		Brand currentBrand = this.brandRepository.findByName(name);
 		if (currentBrand != null) {

@@ -9,6 +9,7 @@ import com.kodlamaio.rentACar.business.response.additionalItems.GetAllAdditional
 import com.kodlamaio.rentACar.business.response.additionalItems.ReadAdditionalItemResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
+import com.kodlamaio.rentACar.entities.concretes.AdditionalItem;
 
 public interface AdditionalItemService {
 	Result add(CreateAdditionalItemRequest createAdditionalItemRequest);
@@ -20,4 +21,6 @@ public interface AdditionalItemService {
 	DataResult<ReadAdditionalItemResponse> getById(int id);
 
 	DataResult<List<GetAllAdditionalItemsResponse>> getAll();
+	
+	public AdditionalItem getByAditionalItemId(int id);
 }

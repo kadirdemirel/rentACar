@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kodlamaio.rentACar.business.abstracts.AdditionalItemService;
 import com.kodlamaio.rentACar.business.abstracts.OrderedAdditionalItemService;
+import com.kodlamaio.rentACar.business.abstracts.RentalService;
 import com.kodlamaio.rentACar.business.request.orderedAdditionalItems.CreateOrderedAdditionalItemRequest;
 import com.kodlamaio.rentACar.business.request.orderedAdditionalItems.DeleteOrderedAdditionalItemRequest;
 import com.kodlamaio.rentACar.business.request.orderedAdditionalItems.UpdateOrderedAdditionalItemRequest;
@@ -19,9 +21,7 @@ import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
-import com.kodlamaio.rentACar.dataAccess.abstracts.AdditionalItemRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.OrderedAdditionalItemRepository;
-import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
 import com.kodlamaio.rentACar.entities.concretes.AdditionalItem;
 import com.kodlamaio.rentACar.entities.concretes.OrderedAdditionalItem;
 import com.kodlamaio.rentACar.entities.concretes.Rental;
@@ -30,18 +30,18 @@ import com.kodlamaio.rentACar.entities.concretes.Rental;
 public class OrderedAdditionalItemManager implements OrderedAdditionalItemService {
 
 	private OrderedAdditionalItemRepository orderedAdditionalItemRepository;
-	private AdditionalItemRepository additionalItemRepository;
-	private RentalRepository rentalRepository;
+	private AdditionalItemService additionalItemService;
+	private RentalService rentalService;
 	private ModelMapperService modelMapperService;
 
 	@Autowired
 	public OrderedAdditionalItemManager(OrderedAdditionalItemRepository orderedAdditionalItemRepository,
-			AdditionalItemRepository additionalItemRepository, RentalRepository rentalRepository,
+			AdditionalItemService additionalItemService, RentalService rentalService,
 			ModelMapperService modelMapperService) {
-		
+
 		this.orderedAdditionalItemRepository = orderedAdditionalItemRepository;
-		this.additionalItemRepository = additionalItemRepository;
-		this.rentalRepository = rentalRepository;
+		this.additionalItemService = additionalItemService;
+		this.rentalService = rentalService;
 		this.modelMapperService = modelMapperService;
 	}
 
@@ -98,10 +98,16 @@ public class OrderedAdditionalItemManager implements OrderedAdditionalItemServic
 	@Override
 	public DataResult<List<GetAllOrderedAdditionalItemsResponse>> getAll() {
 		List<OrderedAdditionalItem> additionals = this.orderedAdditionalItemRepository.findAll();
-		List<GetAllOrderedAdditionalItemsResponse> response = additionals.stream().map(
-				additional -> this.modelMapperService.forResponse().map(additional, GetAllOrderedAdditionalItemsResponse.class))
+		List<GetAllOrderedAdditionalItemsResponse> response = additionals.stream()
+				.map(additional -> this.modelMapperService.forResponse().map(additional,
+						GetAllOrderedAdditionalItemsResponse.class))
 				.collect(Collectors.toList());
 		return new SuccessDataResult<List<GetAllOrderedAdditionalItemsResponse>>(response);
+	}
+
+	@Override
+	public List<OrderedAdditionalItem> getByOrderedAdditionalItemsId(int id) {
+		return this.orderedAdditionalItemRepository.findByRentalId(id);
 	}
 
 	private LocalDate calculateReturnDate(LocalDate pickUpDate, int totalDays) {
@@ -119,7 +125,7 @@ public class OrderedAdditionalItemManager implements OrderedAdditionalItemServic
 	private AdditionalItem checkIfAdditionalItemExistsById(int id) {
 		AdditionalItem currentAdditionalItem;
 		try {
-			currentAdditionalItem = this.additionalItemRepository.findById(id).get();
+			currentAdditionalItem = this.additionalItemService.getByAditionalItemId(id);
 		} catch (Exception e) {
 			throw new BusinessException("ADDITIONAL.ITEM.NOT.EXISTS");
 		}
@@ -139,7 +145,7 @@ public class OrderedAdditionalItemManager implements OrderedAdditionalItemServic
 	private Rental checkIfRentalExistsById(int id) {
 		Rental rental;
 		try {
-			rental = this.rentalRepository.findById(id).get();
+			rental = this.rentalService.geyByRentalId(id);
 		} catch (Exception e) {
 			throw new BusinessException("RENTAL.NOT.EXISTS");
 		}

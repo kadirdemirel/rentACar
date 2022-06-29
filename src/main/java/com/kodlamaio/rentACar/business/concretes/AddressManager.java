@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kodlamaio.rentACar.business.abstracts.AddressService;
+import com.kodlamaio.rentACar.business.abstracts.UserService;
 import com.kodlamaio.rentACar.business.request.addresses.CreateAddressRequest;
 import com.kodlamaio.rentACar.business.request.addresses.DeleteAddressRequest;
 import com.kodlamaio.rentACar.business.request.addresses.UpdateAddressRequest;
@@ -19,7 +20,6 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.AddressRepository;
-import com.kodlamaio.rentACar.dataAccess.abstracts.UserRepository;
 import com.kodlamaio.rentACar.entities.concretes.Address;
 import com.kodlamaio.rentACar.entities.concretes.User;
 
@@ -28,14 +28,14 @@ public class AddressManager implements AddressService {
 
 	private ModelMapperService modelMapperService;
 	private AddressRepository addressRepository;
-	private UserRepository userRepository;
+	private UserService userService;
 
 	@Autowired
 	public AddressManager(ModelMapperService modelMapperService, AddressRepository addressRepository,
-			UserRepository userRepository) {
+			UserService userService) {
 		this.modelMapperService = modelMapperService;
 		this.addressRepository = addressRepository;
-		this.userRepository = userRepository;
+		this.userService = userService;
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class AddressManager implements AddressService {
 	private User checkIfUserExistsById(int id) {
 		User currentUser;
 		try {
-			currentUser = this.userRepository.findById(id).get();
+			currentUser = this.userService.getByUserId(id);
 
 		} catch (Exception e) {
 			throw new BusinessException("USER.NOT.EXISTS");

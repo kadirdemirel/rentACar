@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kodlamaio.rentACar.business.abstracts.CarService;
 import com.kodlamaio.rentACar.business.abstracts.MaintenanceService;
 import com.kodlamaio.rentACar.business.request.maintenance.CreateMaintenanceRequest;
 import com.kodlamaio.rentACar.business.request.maintenance.DeleteMaintenanceRequest;
@@ -18,7 +19,6 @@ import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
-import com.kodlamaio.rentACar.dataAccess.abstracts.CarRepository;
 import com.kodlamaio.rentACar.dataAccess.abstracts.MaintenanceRepository;
 import com.kodlamaio.rentACar.entities.concretes.Car;
 import com.kodlamaio.rentACar.entities.concretes.Maintenance;
@@ -26,16 +26,16 @@ import com.kodlamaio.rentACar.entities.concretes.Maintenance;
 @Service
 public class MaintenanceManager implements MaintenanceService {
 
-	MaintenanceRepository maintenanceRepository;
-	CarRepository carRepository;
-	ModelMapperService modelMapperService;
+	private MaintenanceRepository maintenanceRepository;
+	private CarService carService;
+	private ModelMapperService modelMapperService;
 
 	@Autowired
-	public MaintenanceManager(MaintenanceRepository maintenanceRepository, CarRepository carRepository,
+	public MaintenanceManager(MaintenanceRepository maintenanceRepository, CarService carService,
 			ModelMapperService modelMapperService) {
 
 		this.maintenanceRepository = maintenanceRepository;
-		this.carRepository = carRepository;
+		this.carService = carService;
 		this.modelMapperService = modelMapperService;
 	}
 
@@ -64,9 +64,8 @@ public class MaintenanceManager implements MaintenanceService {
 
 		checkIfMaintenanceExistsById(updateMaintenanceRequest.getId());
 		Car car = checkIfCarExistsById(updateMaintenanceRequest.getCarId());
-
-		Maintenance maintenance = this.modelMapperService.forRequest().map(updateMaintenanceRequest, Maintenance.class);
 		checkCarChangeId(updateMaintenanceRequest, car);
+		Maintenance maintenance = this.modelMapperService.forRequest().map(updateMaintenanceRequest, Maintenance.class);
 		this.maintenanceRepository.save(maintenance);
 		return new SuccessResult("UPDATED.MAINTENANCE");
 	}
@@ -89,7 +88,7 @@ public class MaintenanceManager implements MaintenanceService {
 
 	private Car checkIfCarExistsById(int carId) {
 
-		Car currentCar = this.carRepository.findById(carId);
+		Car currentCar = this.carService.getByCarId(carId);
 
 		if (currentCar == null) {
 			throw new BusinessException("CAR.NOT.EXISTS");

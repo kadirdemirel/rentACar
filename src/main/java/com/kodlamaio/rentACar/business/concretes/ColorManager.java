@@ -46,19 +46,17 @@ public class ColorManager implements ColorService {
 
 	@Override
 	public Result update(UpdateColorRequest updateColorRequest) {
-
+		checkIfColorExistsById(updateColorRequest.getId());
 		checkIfColorExitsByName(updateColorRequest.getName());
 		Color color = this.modelMapperService.forRequest().map(updateColorRequest, Color.class);
-		checkIfColorExistsById(updateColorRequest.getId());
 		this.colorRepository.save(color);
 		return new SuccessResult("UPDATED.COLOR");
 	}
 
 	@Override
 	public Result delete(DeleteColorRequest deleteColorRequest) {
-
-		Color color = this.modelMapperService.forRequest().map(deleteColorRequest, Color.class);
 		checkIfColorExistsById(deleteColorRequest.getId());
+		Color color = this.modelMapperService.forRequest().map(deleteColorRequest, Color.class);
 		this.colorRepository.delete(color);
 		return new SuccessResult("DELETED.COLOR");
 	}
@@ -77,6 +75,11 @@ public class ColorManager implements ColorService {
 				.map(color -> this.modelMapperService.forResponse().map(color, GetAllColorsResponse.class))
 				.collect(Collectors.toList());
 		return new SuccessDataResult<List<GetAllColorsResponse>>(response);
+	}
+
+	@Override
+	public Color getByColorId(int id) {
+		return checkIfColorExistsById(id);
 	}
 
 	private void checkIfColorExitsByName(String name) {

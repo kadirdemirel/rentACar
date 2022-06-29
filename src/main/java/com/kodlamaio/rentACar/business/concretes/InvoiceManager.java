@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kodlamaio.rentACar.business.abstracts.InvoiceService;
+import com.kodlamaio.rentACar.business.abstracts.OrderedAdditionalItemService;
+import com.kodlamaio.rentACar.business.abstracts.RentalService;
 import com.kodlamaio.rentACar.business.request.invoices.CancelInvoiceRequest;
 import com.kodlamaio.rentACar.business.request.invoices.CreateInvoiceRequest;
 import com.kodlamaio.rentACar.business.response.invoices.GetAllInvoicesResponse;
@@ -18,8 +20,6 @@ import com.kodlamaio.rentACar.core.utilities.results.Result;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.InvoiceRepository;
-import com.kodlamaio.rentACar.dataAccess.abstracts.OrderedAdditionalItemRepository;
-import com.kodlamaio.rentACar.dataAccess.abstracts.RentalRepository;
 import com.kodlamaio.rentACar.entities.concretes.Invoice;
 import com.kodlamaio.rentACar.entities.concretes.OrderedAdditionalItem;
 import com.kodlamaio.rentACar.entities.concretes.Rental;
@@ -28,17 +28,17 @@ import com.kodlamaio.rentACar.entities.concretes.Rental;
 public class InvoiceManager implements InvoiceService {
 
 	private InvoiceRepository invoiceRepository;
-	private RentalRepository rentalRepository;
-	private OrderedAdditionalItemRepository orderedAdditionalItemRepository;
+	private RentalService rentalService;
+	private OrderedAdditionalItemService orderedAdditionalItemService;
 	private ModelMapperService modelMapperService;
 
 	@Autowired
-	public InvoiceManager(InvoiceRepository invoiceRepository, RentalRepository rentalRepository,
-			OrderedAdditionalItemRepository orderedAdditionalItemRepository, ModelMapperService modelMapperService) {
+	public InvoiceManager(InvoiceRepository invoiceRepository, RentalService rentalService,
+			OrderedAdditionalItemService orderedAdditionalItemService, ModelMapperService modelMapperService) {
 
 		this.invoiceRepository = invoiceRepository;
-		this.rentalRepository = rentalRepository;
-		this.orderedAdditionalItemRepository = orderedAdditionalItemRepository;
+		this.rentalService = rentalService;
+		this.orderedAdditionalItemService = orderedAdditionalItemService;
 		this.modelMapperService = modelMapperService;
 	}
 
@@ -98,7 +98,7 @@ public class InvoiceManager implements InvoiceService {
 	}
 
 	private double calculateRentalTotalPrice(int rentalId) {
-		Rental rental = this.rentalRepository.findById(rentalId).get();
+		Rental rental = this.rentalService.geyByRentalId(rentalId);
 		double totalPrice = rental.getTotalPrice();
 		return totalPrice;
 	}
@@ -110,7 +110,8 @@ public class InvoiceManager implements InvoiceService {
 
 	private double sumAdditionalTotalPrice(int id) {
 		double result = 0;
-		for (OrderedAdditionalItem orderedAdditionalItem : orderedAdditionalItemRepository.getByRentalId(id)) {
+		for (OrderedAdditionalItem orderedAdditionalItem : this.orderedAdditionalItemService
+				.getByOrderedAdditionalItemsId(id)) {
 
 			result += orderedAdditionalItem.getTotalPrice();
 		}
@@ -132,7 +133,7 @@ public class InvoiceManager implements InvoiceService {
 	private Rental checkIfRentalExistsById(int rentalId) {
 		Rental currentRental;
 		try {
-			currentRental = this.rentalRepository.findById(rentalId).get();
+			currentRental = this.rentalService.geyByRentalId(rentalId);
 		} catch (Exception e) {
 			throw new BusinessException("RENTAL.NOT.EXISTS");
 		}

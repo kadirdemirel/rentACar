@@ -9,6 +9,7 @@ import com.kodlamaio.rentACar.business.response.individualCustomers.GetAllIndivi
 import com.kodlamaio.rentACar.business.response.individualCustomers.ReadIndividualCustomerResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
+import com.kodlamaio.rentACar.entities.concretes.IndividualCustomer;
 
 public interface IndividualCustomerService {
 	Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest);
@@ -20,4 +21,6 @@ public interface IndividualCustomerService {
 	DataResult<ReadIndividualCustomerResponse> getById(int id);
 
 	DataResult<List<GetAllIndividualCustomersResponse>> getAll();
+
+	public IndividualCustomer getByIndividualCustomerId(int id);
 }

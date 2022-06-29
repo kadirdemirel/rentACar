@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.kodlamaio.rentACar.entities.concretes.OrderedAdditionalItem;
 
 public interface OrderedAdditionalItemRepository extends JpaRepository<OrderedAdditionalItem, Integer> {
-	List<OrderedAdditionalItem> getByRentalId(int rentalId);
+	List<OrderedAdditionalItem> findByRentalId(int rentalId);// findby
 }

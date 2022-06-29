@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.kodlamaio.rentACar.business.abstracts.UserService;
 import com.kodlamaio.rentACar.business.request.users.CreateUserRequest;
 import com.kodlamaio.rentACar.business.response.users.GetAllUserResponse;
+import com.kodlamaio.rentACar.core.utilities.exceptions.BusinessException;
 import com.kodlamaio.rentACar.core.utilities.mapping.ModelMapperService;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -51,6 +52,23 @@ public class UserManager implements UserService {
 				.collect(Collectors.toList());
 
 		return new SuccessDataResult<List<GetAllUserResponse>>(response);
+	}
+
+	@Override
+	public User getByUserId(int id) {
+		return checkIfUserExistsById(id);
+	}
+
+	private User checkIfUserExistsById(int id) {
+		User currentUser;
+		try {
+			currentUser = this.userRepository.findById(id).get();
+
+		} catch (Exception e) {
+			throw new BusinessException("USER.NOT.EXISTS");
+		}
+		return currentUser;
+
 	}
 
 }

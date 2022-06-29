@@ -8,4 +8,5 @@ public interface IndividualCustomerRepository extends JpaRepository<IndividualCu
 	IndividualCustomer findByNationality(String nationality);
 
 	IndividualCustomer findByEmail(String email);
+	
 }

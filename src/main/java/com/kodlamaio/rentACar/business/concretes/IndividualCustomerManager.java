@@ -21,7 +21,6 @@ import com.kodlamaio.rentACar.core.utilities.results.SuccessDataResult;
 import com.kodlamaio.rentACar.core.utilities.results.SuccessResult;
 import com.kodlamaio.rentACar.dataAccess.abstracts.IndividualCustomerRepository;
 import com.kodlamaio.rentACar.entities.concretes.IndividualCustomer;
-import com.kodlamaio.rentACar.entities.concretes.Invoice;
 
 @Service
 public class IndividualCustomerManager implements IndividualCustomerService {
@@ -52,11 +51,11 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	@Override
 	public Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest) {
 		checkIfIndividualCustomerExitsByEmail(updateIndividualCustomerRequest.getEmail());
+		checkIfIndividualCustomerExistsById(updateIndividualCustomerRequest.getIndividualCustomerId());
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest()
 				.map(updateIndividualCustomerRequest, IndividualCustomer.class);
 
 		setIndividualCustomer(individualCustomer, updateIndividualCustomerRequest.getIndividualCustomerId());
-		checkIfIndividualCustomerExistsById(updateIndividualCustomerRequest.getIndividualCustomerId());
 
 		this.individualCustomerRepository.save(individualCustomer);
 		return new SuccessResult("INDIVIDUAL.CUSTOMER.UPDATED");
@@ -64,11 +63,10 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
 	@Override
 	public Result delete(DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) {
-
+		checkIfIndividualCustomerExistsById(deleteIndividualCustomerRequest.getIndividualCustomerId());
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest()
 				.map(deleteIndividualCustomerRequest, IndividualCustomer.class);
 
-		checkIfIndividualCustomerExistsById(deleteIndividualCustomerRequest.getIndividualCustomerId());
 		this.individualCustomerRepository.delete(individualCustomer);
 		return new SuccessResult("INDIVIDUAL.CUSTOMER.DELETED");
 	}
@@ -89,6 +87,11 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 						GetAllIndividualCustomersResponse.class))
 				.collect(Collectors.toList());
 		return new SuccessDataResult<List<GetAllIndividualCustomersResponse>>(response);
+	}
+
+	@Override
+	public IndividualCustomer getByIndividualCustomerId(int id) {
+		return checkIfIndividualCustomerExistsById(id);
 	}
 
 	private IndividualCustomer checkIfIndividualCustomerExistsById(int id) {
@@ -131,13 +134,6 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 		IndividualCustomer individualCustomer = this.individualCustomerRepository.findByEmail(email);
 		if (individualCustomer != null) {
 			throw new BusinessException("INDIVIDUAL.CUSTOMER.EXITS");
-		}
-	}
-
-	private void checkIfEmailExists(String email) {
-		IndividualCustomer individualCustomer = this.individualCustomerRepository.findByEmail(email);
-		if (individualCustomer != null) {
-			throw new BusinessException("INDIVIDUAL.CUSTOMER.NOT.EXISTS");
 		}
 	}
 
