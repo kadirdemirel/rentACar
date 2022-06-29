@@ -42,7 +42,7 @@ public class MaintenanceManager implements MaintenanceService {
 	@Override
 	public Result add(CreateMaintenanceRequest createMaintenanceRequest) {
 
-		Car car = checkIfCarExistsById(createMaintenanceRequest.getCarId());
+		Car car = this.carService.getByCarId(createMaintenanceRequest.getCarId());
 		checkCarAvailable(car.getId());
 		Maintenance maintenance = this.modelMapperService.forRequest().map(createMaintenanceRequest, Maintenance.class);
 
@@ -63,7 +63,7 @@ public class MaintenanceManager implements MaintenanceService {
 	public Result update(UpdateMaintenanceRequest updateMaintenanceRequest) {
 
 		checkIfMaintenanceExistsById(updateMaintenanceRequest.getId());
-		Car car = checkIfCarExistsById(updateMaintenanceRequest.getCarId());
+		Car car = this.carService.getByCarId(updateMaintenanceRequest.getCarId());
 		checkCarChangeId(updateMaintenanceRequest, car);
 		Maintenance maintenance = this.modelMapperService.forRequest().map(updateMaintenanceRequest, Maintenance.class);
 		this.maintenanceRepository.save(maintenance);

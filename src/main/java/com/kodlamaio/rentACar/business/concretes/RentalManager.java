@@ -17,7 +17,7 @@ import com.kodlamaio.rentACar.business.request.rentals.CreateIndividualCustomerR
 import com.kodlamaio.rentACar.business.request.rentals.DeleteRentalRequest;
 import com.kodlamaio.rentACar.business.request.rentals.UpdateCorporateCustomerRentalRequest;
 import com.kodlamaio.rentACar.business.request.rentals.UpdateIndividualCustomerRentalRequest;
-import com.kodlamaio.rentACar.business.response.rentals.GetAllRentalResponse;
+import com.kodlamaio.rentACar.business.response.rentals.GetAllRentalsResponse;
 import com.kodlamaio.rentACar.business.response.rentals.ReadRentalResponse;
 import com.kodlamaio.rentACar.core.utilities.exceptions.BusinessException;
 import com.kodlamaio.rentACar.core.utilities.mapping.ModelMapperService;
@@ -58,9 +58,9 @@ public class RentalManager implements RentalService {
 	@Override
 	public Result addIndividualCustomerRental(
 			CreateIndividualCustomerRentalRequest createIndividualCustomerRentalRequest) {
-		Car car = checkIfCarExistsById(createIndividualCustomerRentalRequest.getCarId());
-		IndividualCustomer individualCustomer = checkIfIndividualCustomerExistsById(
-				createIndividualCustomerRentalRequest.getIndividualCustomerId());
+		Car car = this.carService.getByCarId(createIndividualCustomerRentalRequest.getCarId());
+		IndividualCustomer individualCustomer = this.individualCustomerService
+				.getByIndividualCustomerId(createIndividualCustomerRentalRequest.getIndividualCustomerId());
 
 		checkCarAvailable(car.getId());
 
@@ -79,7 +79,7 @@ public class RentalManager implements RentalService {
 	@Override
 	public Result addCorporateCustomerRental(
 			CreateCorporateCustomerRentalRequest createCorporateCustomerRentalRequest) {
-		Car car = checkIfCarExistsById(createCorporateCustomerRentalRequest.getCarId());
+		Car car = this.carService.getByCarId(createCorporateCustomerRentalRequest.getCarId());
 		checkIfCorporateCustomerExistsById(createCorporateCustomerRentalRequest.getCorporateCustomerId());
 		checkCarAvailable(car.getId());
 		Rental rental = this.modelMapperService.forRequest().map(createCorporateCustomerRentalRequest, Rental.class);
@@ -94,9 +94,9 @@ public class RentalManager implements RentalService {
 	public Result updateIndividualCustomerRental(
 			UpdateIndividualCustomerRentalRequest updateIndividualCustomerRentalRequest) {
 		checkIfRentalExistsById(updateIndividualCustomerRentalRequest.getId());
-		Car car = checkIfCarExistsById(updateIndividualCustomerRentalRequest.getCarId());
-		IndividualCustomer individualCustomer = checkIfIndividualCustomerExistsById(
-				updateIndividualCustomerRentalRequest.getIndividualCustomerId());
+		Car car = this.carService.getByCarId(updateIndividualCustomerRentalRequest.getCarId());
+		IndividualCustomer individualCustomer = this.individualCustomerService
+				.getByIndividualCustomerId(updateIndividualCustomerRentalRequest.getIndividualCustomerId());
 		Rental rental = this.modelMapperService.forRequest().map(updateIndividualCustomerRentalRequest, Rental.class);
 		rental.setReturnDate(calculateReturnDate(updateIndividualCustomerRentalRequest.getPickUpDate(),
 				updateIndividualCustomerRentalRequest.getTotalDays()));
@@ -114,7 +114,7 @@ public class RentalManager implements RentalService {
 	public Result updateCorporateCustomerRental(
 			UpdateCorporateCustomerRentalRequest updateCorporateCustomerRentalRequest) {
 		checkIfRentalExistsById(updateCorporateCustomerRentalRequest.getId());
-		Car car = checkIfCarExistsById(updateCorporateCustomerRentalRequest.getCarId());
+		Car car = this.carService.getByCarId(updateCorporateCustomerRentalRequest.getCarId());
 		checkIfCorporateCustomerExistsById(updateCorporateCustomerRentalRequest.getCorporateCustomerId());
 		Rental rental = this.modelMapperService.forRequest().map(updateCorporateCustomerRentalRequest, Rental.class);
 		rental.setReturnDate(calculateReturnDate(updateCorporateCustomerRentalRequest.getPickUpDate(),
@@ -143,16 +143,16 @@ public class RentalManager implements RentalService {
 	}
 
 	@Override
-	public DataResult<List<GetAllRentalResponse>> getAll() {
+	public DataResult<List<GetAllRentalsResponse>> getAll() {
 		List<Rental> rentals = this.rentalRepository.findAll();
-		List<GetAllRentalResponse> responses = rentals.stream()
-				.map(rental -> this.modelMapperService.forResponse().map(rental, GetAllRentalResponse.class))
+		List<GetAllRentalsResponse> responses = rentals.stream()
+				.map(rental -> this.modelMapperService.forResponse().map(rental, GetAllRentalsResponse.class))
 				.collect(Collectors.toList());
-		return new SuccessDataResult<List<GetAllRentalResponse>>(responses);
+		return new SuccessDataResult<List<GetAllRentalsResponse>>(responses);
 	}
 
 	@Override
-	public Rental geyByRentalId(int id) {
+	public Rental getByRentalId(int id) {
 		return checkIfRentalExistsById(id);
 	}
 
@@ -232,18 +232,6 @@ public class RentalManager implements RentalService {
 			throw new BusinessException("CORPORATE.CUSTOMER.NOT.EXISTS");
 		}
 		return currentCorporateCustomer;
-
-	}
-
-	private IndividualCustomer checkIfIndividualCustomerExistsById(int id) {
-
-		IndividualCustomer currentIndividualCustomer;
-		try {
-			currentIndividualCustomer = this.individualCustomerService.getByIndividualCustomerId(id);
-		} catch (Exception e) {
-			throw new BusinessException("INDIVIDUAL.CUSTOMER.NOT.EXISTS");
-		}
-		return currentIndividualCustomer;
 
 	}
 

@@ -47,7 +47,8 @@ public class OrderedAdditionalItemManager implements OrderedAdditionalItemServic
 
 	@Override
 	public Result add(CreateOrderedAdditionalItemRequest createAdditionalRequest) {
-		AdditionalItem additionalItem = checkIfAdditionalItemExistsById(createAdditionalRequest.getAdditionalItemId());
+		AdditionalItem additionalItem = this.additionalItemService
+				.getByAditionalItemId(createAdditionalRequest.getAdditionalItemId());
 		checkIfRentalExistsById(createAdditionalRequest.getRentalId());
 		OrderedAdditionalItem orderedAdditionalItem = this.modelMapperService.forRequest().map(createAdditionalRequest,
 				OrderedAdditionalItem.class);
@@ -65,7 +66,8 @@ public class OrderedAdditionalItemManager implements OrderedAdditionalItemServic
 	public Result update(UpdateOrderedAdditionalItemRequest updateAdditionalRequest) {
 		checkIfOrderedAdditionalItemExistsById(updateAdditionalRequest.getId());
 		checkIfRentalExistsById(updateAdditionalRequest.getRentalId());
-		AdditionalItem additionalItem = checkIfAdditionalItemExistsById(updateAdditionalRequest.getAdditionalItemId());
+		AdditionalItem additionalItem = this.additionalItemService
+				.getByAditionalItemId(updateAdditionalRequest.getAdditionalItemId());
 		OrderedAdditionalItem orderedAdditionalItem = this.modelMapperService.forRequest().map(updateAdditionalRequest,
 				OrderedAdditionalItem.class);
 		orderedAdditionalItem.setReturnDate(
@@ -122,16 +124,6 @@ public class OrderedAdditionalItemManager implements OrderedAdditionalItemServic
 		return totalPrice;
 	}
 
-	private AdditionalItem checkIfAdditionalItemExistsById(int id) {
-		AdditionalItem currentAdditionalItem;
-		try {
-			currentAdditionalItem = this.additionalItemService.getByAditionalItemId(id);
-		} catch (Exception e) {
-			throw new BusinessException("ADDITIONAL.ITEM.NOT.EXISTS");
-		}
-		return currentAdditionalItem;
-	}
-
 	private OrderedAdditionalItem checkIfOrderedAdditionalItemExistsById(int id) {
 		OrderedAdditionalItem currentOrderedAdditionalItem;
 		try {
@@ -145,7 +137,7 @@ public class OrderedAdditionalItemManager implements OrderedAdditionalItemServic
 	private Rental checkIfRentalExistsById(int id) {
 		Rental rental;
 		try {
-			rental = this.rentalService.geyByRentalId(id);
+			rental = this.rentalService.getByRentalId(id);
 		} catch (Exception e) {
 			throw new BusinessException("RENTAL.NOT.EXISTS");
 		}

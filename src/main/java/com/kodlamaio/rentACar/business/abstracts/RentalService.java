@@ -7,7 +7,7 @@ import com.kodlamaio.rentACar.business.request.rentals.CreateIndividualCustomerR
 import com.kodlamaio.rentACar.business.request.rentals.DeleteRentalRequest;
 import com.kodlamaio.rentACar.business.request.rentals.UpdateCorporateCustomerRentalRequest;
 import com.kodlamaio.rentACar.business.request.rentals.UpdateIndividualCustomerRentalRequest;
-import com.kodlamaio.rentACar.business.response.rentals.GetAllRentalResponse;
+import com.kodlamaio.rentACar.business.response.rentals.GetAllRentalsResponse;
 import com.kodlamaio.rentACar.business.response.rentals.ReadRentalResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -19,7 +19,7 @@ public interface RentalService {
 
 	DataResult<ReadRentalResponse> getById(int id);
 
-	DataResult<List<GetAllRentalResponse>> getAll();
+	DataResult<List<GetAllRentalsResponse>> getAll();
 
 	Result addIndividualCustomerRental(CreateIndividualCustomerRentalRequest createRentalRequest);
 
@@ -29,6 +29,6 @@ public interface RentalService {
 
 	Result updateCorporateCustomerRental(UpdateCorporateCustomerRentalRequest updateCorporateCustomerRentalRequest);
 
-	public Rental geyByRentalId(int id);
+	public Rental getByRentalId(int id);
 
 }

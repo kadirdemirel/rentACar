@@ -98,7 +98,7 @@ public class InvoiceManager implements InvoiceService {
 	}
 
 	private double calculateRentalTotalPrice(int rentalId) {
-		Rental rental = this.rentalService.geyByRentalId(rentalId);
+		Rental rental = this.rentalService.getByRentalId(rentalId);
 		double totalPrice = rental.getTotalPrice();
 		return totalPrice;
 	}
@@ -133,7 +133,7 @@ public class InvoiceManager implements InvoiceService {
 	private Rental checkIfRentalExistsById(int rentalId) {
 		Rental currentRental;
 		try {
-			currentRental = this.rentalService.geyByRentalId(rentalId);
+			currentRental = this.rentalService.getByRentalId(rentalId);
 		} catch (Exception e) {
 			throw new BusinessException("RENTAL.NOT.EXISTS");
 		}

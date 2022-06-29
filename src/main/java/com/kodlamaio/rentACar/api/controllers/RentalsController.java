@@ -19,7 +19,7 @@ import com.kodlamaio.rentACar.business.request.rentals.CreateIndividualCustomerR
 import com.kodlamaio.rentACar.business.request.rentals.DeleteRentalRequest;
 import com.kodlamaio.rentACar.business.request.rentals.UpdateCorporateCustomerRentalRequest;
 import com.kodlamaio.rentACar.business.request.rentals.UpdateIndividualCustomerRentalRequest;
-import com.kodlamaio.rentACar.business.response.rentals.GetAllRentalResponse;
+import com.kodlamaio.rentACar.business.response.rentals.GetAllRentalsResponse;
 import com.kodlamaio.rentACar.business.response.rentals.ReadRentalResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
@@ -68,7 +68,7 @@ public class RentalsController {
 	}
 
 	@GetMapping("/getall")
-	public DataResult<List<GetAllRentalResponse>> getAll() {
+	public DataResult<List<GetAllRentalsResponse>> getAll() {
 		return this.rentalService.getAll();
 	}
 }
