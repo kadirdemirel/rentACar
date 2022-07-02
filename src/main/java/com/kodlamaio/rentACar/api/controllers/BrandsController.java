@@ -59,4 +59,9 @@ public class BrandsController {
 		return this.brandService.getAll();
 	}
 
+	@PostMapping("/addbrand")
+	public Result addBrand(@RequestBody @Valid CreateBrandRequest createBrandRequest) {
+		return this.brandService.addBrand(createBrandRequest);
+	}
+
 }

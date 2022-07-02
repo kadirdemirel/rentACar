@@ -25,4 +25,6 @@ public interface BrandService {
 
 	public Brand getByBrandId(int id);
 
+	Result addBrand(CreateBrandRequest createBrandRequest);
+
 }

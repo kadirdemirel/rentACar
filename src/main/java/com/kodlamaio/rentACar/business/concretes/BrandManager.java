@@ -88,6 +88,19 @@ public class BrandManager implements BrandService {
 		return checkIfBrandExistsById(id);
 	}
 
+	@Override
+	public Result addBrand(CreateBrandRequest createBrandRequest) {
+		checkIfBrandExistsByName(createBrandRequest.getName());
+		Brand brand = convertCreateBrandRequestToEntity(createBrandRequest);
+		this.brandRepository.save(brand);
+		return new SuccessResult("BRAND.ADDED");
+	}
+
+	private Brand convertCreateBrandRequestToEntity(CreateBrandRequest createBrandRequest) {
+		return Brand.builder().name(createBrandRequest.getName()).build();
+
+	}
+
 	private void checkIfBrandExistsByName(String name) {
 		Brand currentBrand = this.brandRepository.findByName(name);
 		if (currentBrand != null) {
