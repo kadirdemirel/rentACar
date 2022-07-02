@@ -22,7 +22,6 @@ import com.kodlamaio.rentACar.business.response.brands.GetAllBrandsResponse;
 import com.kodlamaio.rentACar.business.response.brands.ReadBrandResponse;
 import com.kodlamaio.rentACar.core.utilities.results.DataResult;
 import com.kodlamaio.rentACar.core.utilities.results.Result;
-import com.kodlamaio.rentACar.entities.concretes.Brand;
 
 @RestController
 @RequestMapping("/api/brands")
