@@ -13,5 +13,7 @@ public class ReadBrandResponse {
 
 	@Min(1)
 	private int id;
+	
+	private String name;
 
 }

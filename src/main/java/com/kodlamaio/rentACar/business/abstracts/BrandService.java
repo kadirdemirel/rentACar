@@ -27,4 +27,6 @@ public interface BrandService {
 
 	Result addBrand(CreateBrandRequest createBrandRequest);
 
+	DataResult<ReadBrandResponse> getBrand(int id);
+
 }

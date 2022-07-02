@@ -96,6 +96,13 @@ public class BrandManager implements BrandService {
 		return new SuccessResult("BRAND.ADDED");
 	}
 
+	@Override
+	public DataResult<ReadBrandResponse> getBrand(int id) {
+		Brand brand = checkIfBrandExistsById(id);
+		ReadBrandResponse readBrandResponse = this.modelMapperService.forResponse().map(brand, ReadBrandResponse.class);
+		return new SuccessDataResult<ReadBrandResponse>(readBrandResponse);
+	}
+
 	private Brand convertCreateBrandRequestToEntity(CreateBrandRequest createBrandRequest) {
 		return Brand.builder().name(createBrandRequest.getName()).build();
 
