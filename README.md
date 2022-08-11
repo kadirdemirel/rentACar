@@ -32,7 +32,7 @@ Contributions are what make the open source community such an amazing place to b
 <a href="https://github.com/Burcubayik">burcubayik</a>
 
 ## Contact
-[![](https://img.shields.io/badge/linkedin-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kadir-demirel/)
+[![](https://img.shields.io/badge/linkedin-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kadirdemirel/)
 [![](https://img.shields.io/badge/medium-%2312100E.svg?&style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@kadirdemirell)
 [![Mail Badge](https://img.shields.io/badge/kadirdemirel_17@hotmail.com-c14438?style=for-the-badge&logo=Gmail&logoColor=white&link=mailto:kadirdemirel_17@hotmail.com)](mailto:kadirdemirel_17@hotmail.com)
 
